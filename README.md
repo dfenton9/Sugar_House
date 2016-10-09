@@ -1,2 +1,2 @@
 # Sugar_House
-This repo setup for a class project.
+This repo is setup for a class project.
