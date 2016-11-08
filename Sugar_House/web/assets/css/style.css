@@ -101,7 +101,8 @@ h1, h2, h3, h4, h5, h6 {
    ========================================================================== */
 
 #headerwrap {
-	background: url(../img/tree.jpg) no-repeat center top;
+	background: url(../img/tree.jpg) no-repeat center top fixed;
+        background-size: cover;
 	margin-top: -70px;
 	padding-top: 250px;
 	text-align:center;
