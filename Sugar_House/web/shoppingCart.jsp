@@ -48,9 +48,9 @@
         </div>
         <div id="nav" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-left">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="logIn.jsp">Login</a></li>
-            <li class="active"><a href="shoppingCart.jsp">My Cart</a></li>
+            <li><a href="index.jsp">Home</a></li>
+<!--             <li><a href="logIn.jsp">Login</a></li> -->
+<!--             <li class="active"><a href="shoppingCart.jsp">My Cart</a></li> -->
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -87,22 +87,22 @@
 	</div><!--/container -->
 
 
-	<div id="footerwrap">
-		<div class="container">
-			<div class="row centered">
-				<div class="col-lg-4">
-					<p><b></b></p>
-				</div>
+<!-- 	<div id="footerwrap"> -->
+<!-- 		<div class="container"> -->
+<!-- 			<div class="row centered"> -->
+<!-- 				<div class="col-lg-4"> -->
+<!-- 					<p><b></b></p> -->
+<!-- 				</div> -->
 			
-				<div class="col-lg-4">
-					<p>Free Shipping on all orders!</p>
-				</div>
-				<div class="col-lg-4">
-					<p></p>
-				</div>
-			</div>
-		</div>
-	</div><! --/footerwrap -->
+<!-- 				<div class="col-lg-4"> -->
+<!-- 					<p>Free Shipping on all orders!</p> -->
+<!-- 				</div> -->
+<!-- 				<div class="col-lg-4"> -->
+<!-- 					<p></p> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div><! --/footerwrap --> 
 	
 
 

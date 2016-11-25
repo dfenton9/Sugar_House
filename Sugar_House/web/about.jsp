@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -26,7 +28,16 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-
+<style>
+h1 {
+	color:#ffffff;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	letter-spacing: 4px;
+	font-size: 80px;
+	font-weight: bold;
+}
+</style>
   <body>
 
     <!-- Static navbar -->
@@ -40,11 +51,11 @@
             <span class="icon-bar"></span>
           </button>
         </div>
-        <div class="navbar-collapse collapse">
+		<div id="nav" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-left">
-            <li class="active"><a href="index.html">Home</a></li>
-            <li>Login</li>
-            <li>My Cart</li>
+            <li class="active"><a href="index.jsp">Home</a></li>
+            <li><a href="logIn.jsp">Login</a></li>
+            <li><a href="shoppingCart.jsp">My Cart</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -58,39 +69,37 @@
 				<div class="col-lg-6 col-lg-offset-3">
 					<h1>Our Story</h1>			
 				</div>
-			</div><! --/row -->
+			</div><!--/row -->
 	    </div> <!-- /container -->
-	</div><! --/aboutwrap -->
+	</div><!--/aboutwrap -->
 	
 	<div class="container">
 		<div class="row centered mt mb">
 			<div class="col-lg-8 col-lg-offset-2">
-				<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-				<p>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-				<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.</p>
+				<p>Sugar House is a family owned company founded in 1920.</p>
 			</div>
 
-		</div><! --/row -->
-	</div><! --/container -->
+		</div><!--/row -->
+	</div><!--/container -->
 	
 
 
-	<div id="footerwrap">
-		<div class="container">
-			<div class="row centered">
-				<div class="col-lg-4">
-					<p><b></b></p>
-				</div>
+<!-- 	<div id="footerwrap"> -->
+<!-- 		<div class="container"> -->
+<!-- 			<div class="row centered"> -->
+<!-- 				<div class="col-lg-4"> -->
+<!-- 					<p><b></b></p> -->
+<!-- 				</div> -->
 			
-				<div class="col-lg-4">
-					<p>Free Shipping on all orders!</p>
-				</div>
-				<div class="col-lg-4">
-					<p></p>
-				</div>
-			</div>
-		</div>
-	</div><! --/footerwrap -->
+<!-- 				<div class="col-lg-4"> -->
+<!-- 					<p>Free Shipping on all orders!</p> -->
+<!-- 				</div> -->
+<!-- 				<div class="col-lg-4"> -->
+<!-- 					<p></p> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div>/footerwrap -->
 
 
     <!-- Bootstrap core JavaScript

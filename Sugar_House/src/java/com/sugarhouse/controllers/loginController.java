@@ -7,6 +7,7 @@ package com.sugarhouse.controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,24 +31,55 @@ public class loginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            
-        String login = request.getParameter("loginId");
-        String email = request.getParameter("email");
-        String confirmEmail = request.getParameter("confirmEmail");
-        String password = request.getParameter("password");
-        String confirmPassword = request.getParameter("confirmPassword");
         
-        String errMsg = "";
-        String url = "/index.html";
-        if(!email.equals(confirmEmail))
-            errMsg += "Emails do not match. ";
-    
-        if(!password.equals(confirmPassword))
-            errMsg += "Passwords do not match. ";
+    	String errMsg = "";
+        String url = "/index.jsp";
         
-        if(!errMsg.equals(""))
-            url = "/logIn.jsp";
-        
+    	String action = request.getParameter("action");
+
+		if(action.equals("new user")){
+			//Redirect user to registration page if they are new
+			url = "/register.jsp";
+		}
+		if(action.equals("register")){
+			//Get registration parameters
+			String login = request.getParameter("loginId");
+	        String email = request.getParameter("email");
+	        String confirmEmail = request.getParameter("confirmEmail");
+	        String password = request.getParameter("password");
+	        String confirmPassword = request.getParameter("confirmPassword");
+	        
+	        //Ensure all fields were filled out
+	        if(login.isEmpty() || email.isEmpty() || confirmEmail.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()){
+	        	errMsg = "One or more fields can be left empty.";
+	        }
+	        
+	        //Ensure the same email/password was entered in confirmation field
+	        if(!email.equals(confirmEmail))
+	            errMsg += "Emails do not match. ";
+	    
+	        if(!password.equals(confirmPassword))
+	            errMsg += "Passwords do not match. ";
+	        
+	        //If no registration issues occur, redirect user to login
+	        if(!errMsg.equals(""))
+	            url = "/logIn.jsp";
+	        
+	        //TODO: Enter user into database
+		}
+		if(action.equals("login")){
+	        String login = request.getParameter("loginId");
+	        String email = request.getParameter("email");
+	        String password = request.getParameter("password");
+	        
+	        //TODO:Check if username/password combination is correct
+	        
+	      //If no login issues occur, redirect user to the home page
+	        if(!errMsg.equals(""))
+	            url = "/index.jsp";
+
+		}
+
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
         dispatcher.forward(request, response); 
     }

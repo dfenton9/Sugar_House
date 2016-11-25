@@ -1,3 +1,9 @@
+<%-- 
+    Document   : logIn
+    Created on : Nov 7, 2016, 8:29:05 PM
+    Author     : Fenton
+--%>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -42,60 +48,65 @@
         </div>
         <div id="nav" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-left">
-            <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="logIn.jsp">Login</a></li>
-            <li><a href="shoppingCart.jsp">My Cart</a></li>
+            <li><a href="index.jsp">Home</a></li>
+<!--             <li class="active"><a href="logIn.jsp">Login</a></li> -->
+<!--             <li><a href="shoppingCart.jsp">My Cart</a></li> -->
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
-
-
-	<div id="headerwrap">
-	    <div class="container">
-			<div class="row">
-				<div class="col-lg-10 col-lg-offset-3">
-					<h4>Welcome to</h4>
-					<h1>SUGAR HOUSE</h1>
-				</div>
-			</div><!--/row -->
-	    </div> <!-- /container -->
-	</div><!--/headerwrap -->
-	
-	<section id="works"></section>
 	<div class="container">
 		<div class="row centered mt mb">
+                    <form action="loginController" method="POST">
+                        <table>
+                            <tr>
+                                <td>Login ID:</td>
+                                <td><input type="text" name="loginId"></td>
+                            </tr>
+                            <tr>
+                                <td>Email:</td>
+                                <td><input type="email" name="email"></td>
+                            </tr>
+                            <tr>
+                                <td>Confirm Email:</td>
+                                <td><input type="email" name="confirmEmail"></td>
+                            </tr>
+                            <tr>
+                                <td>Password:</td>
+                                <td><input type="password" name="password"></td>
+                            </tr>
+                            <tr>
+                                <td>Confirm Password:</td>
+                                <td><input type="password" name="confirmPassword"></td>
+                            </tr>                            
+                        </table>
+                        <p></p>
+                        <div class="button-section">
+					<input type="submit" value="Register" style="width: 250px"> <input
+						type="hidden" name="action" value="register">
+				</div>
+                    </form>
 			
-			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
-				<a href="work.html"><img src="assets/img/portfolio/marketplace.png" class="img-responsive"></a>
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
-				<a href="about.html"><img src="assets/img/portfolio/ourstory.png" class="img-responsive"></a>
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
-				<a href="marketplace.html"><img src="assets/img/portfolio/newarrivals.png" class="img-responsive"></a>
-			</div>
-			
-	</div><!--/row -->
+                </div><!--/row -->
 	</div><!--/container -->
 
 
-	<div id="footerwrap">
-		<div class="container">
-			<div class="row centered">
-				<div class="col-lg-4">
-					<p><b></b></p>
-				</div>
+<!-- 	<div id="footerwrap"> -->
+<!-- 		<div class="container"> -->
+<!-- 			<div class="row centered"> -->
+<!-- 				<div class="col-lg-4"> -->
+<!-- 					<p><b></b></p> -->
+<!-- 				</div> -->
 			
-				<div class="col-lg-4">
-					<p>Free Shipping on all orders!</p>
-				</div>
-				<div class="col-lg-4">
-					<p></p>
-				</div>
-			</div>
-		</div>
-	</div><! --/footerwrap -->
+<!-- 				<div class="col-lg-4"> -->
+<!-- 					<p>Free Shipping on all orders!</p> -->
+<!-- 				</div> -->
+<!-- 				<div class="col-lg-4"> -->
+<!-- 					<p></p> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div><! --/footerwrap -->
 	
 
 
@@ -106,3 +117,4 @@
     <script src="assets/js/bootstrap.min.js"></script>
   </body>
 </html>
+
