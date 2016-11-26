@@ -31,6 +31,14 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+<script type="text/javascript" src="inputValidation.js">
+	
+</script>
+<style>
+th, td {
+	padding: 15px;
+}
+</style>
 </head>
 
 <body>
@@ -58,59 +66,51 @@
 	</div>
 	<div class="container">
 		<div class="row centered mt mb">
-			<form action="loginController" method="POST">
+			<form action="loginController" method="POST"
+				onsubmit="return inputValidation()">
+
+				<h2 align="left">User Login</h2>
+
 				<table>
 					<tr>
 						<td>Login ID:</td>
-						<td><input type="text" name="loginId"></td>
+						<td><input type="text" name="loginId" id="loginId"></td>
 					</tr>
 					<tr>
 						<td>Email:</td>
-						<td><input type="email" name="email"></td>
+						<td><input type="email" name="email" id="email"></td>
 					</tr>
 					<tr>
 						<td>Password:</td>
-						<td><input type="password" name="password"></td>
+						<td><input type="password" name="password" id="password"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><div class="button-section">
+								<input type="submit" value="Login" style="width: 200px">
+								<input type="hidden" name="action" value="login">
+							</div></td>
 					</tr>
 				</table>
+			</form>
+
+
+
+			<form action="loginController" method="POST" style="width: 400px">
+				<p></p>
+				<p></p>
+				<p>New user? Please create an account.</p>
 				<p></p>
 				<div class="button-section">
-					<input type="submit" value="Login" style="width: 250px"> <input
-						type="hidden" name="action" value="login">
-				</div>
-			</form>
-<p></p>
-<p>New user? Please create an account.</p>
-<p></p>
-<form action="loginController" method="POST">
-				<div class="button-section">
-					<input type="submit" value="Create Account" style="width: 250px">
+					<input type="submit" value="Create Account" style="width: 200px">
 					<input type="hidden" name="action" value="new user">
 				</div>
-				</form>
+				<p></p>
+			</form>
 		</div>
 		<!--/row -->
 	</div>
 	<!--/container -->
-
-
-	<!-- 	<div id="footerwrap"> -->
-	<!-- 		<div class="container"> -->
-	<!-- 			<div class="row centered"> -->
-	<!-- 				<div class="col-lg-4"> -->
-	<!-- 					<p><b></b></p> -->
-	<!-- 				</div> -->
-
-	<!-- 				<div class="col-lg-4"> -->
-	<!-- 					<p>Free Shipping on all orders!</p> -->
-	<!-- 				</div> -->
-	<!-- 				<div class="col-lg-4"> -->
-	<!-- 					<p></p> -->
-	<!-- 				</div> -->
-	<!-- 			</div> -->
-	<!-- 		</div> -->
-	<!-- 	</div><! --/footerwrap -->
-
 
 
 	<!-- Bootstrap core JavaScript

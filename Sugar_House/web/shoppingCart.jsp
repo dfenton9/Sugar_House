@@ -57,31 +57,8 @@
     </div>
 	<div class="container">
 		<div class="row centered mt mb">
-                    <form>
-                        <table>
-                            <tr>
-                                <td>Login ID:</td>
-                                <td><input type="text"></td>
-                            </tr>
-                            <tr>
-                                <td>Email:</td>
-                                <td><input type="text"></td>
-                            </tr>
-                            <tr>
-                                <td>Confirm Email:</td>
-                                <td><input type="text"></td>
-                            </tr>
-                            <tr>
-                                <td>Password:</td>
-                                <td><input type="password"></td>
-                            </tr>
-                            <tr>
-                                <td>Confirm Password:</td>
-                                <td><input type="password"></td>
-                            </tr>                            
-                        </table>
-                        <input type="submit" value="Register">
-                    </form>
+ 
+ 		<!-- TODO: Create a table of shopping cart items -->
 			
                 </div><!--/row -->
 	</div><!--/container -->
