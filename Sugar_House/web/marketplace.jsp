@@ -101,7 +101,15 @@ button {
 							<p>Item Number: 0001</p>
 							<p>Description: 100% grade A organic maple syrup (36 oz)</p>
 						</td>
-						<td> <button type="button" onclick="alert('Item added to cart')">Add to cart</button> </td>
+						<td> <form action="loginController" method="post">
+						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
+						<p></p>
+						<div class="button-section">
+						<input type="submit" onclick="alert('Item added to cart')" value="Add to Cart">
+						<input type="hidden" name="action" value="add">
+						<input type="hidden" name="ID" value="0001">
+						<input type="hidden" name="cost" value="50.00">
+						</div></form></td>					
 					</tr>
 					<tr>
 						<td><img class="img-responsive"
@@ -111,7 +119,15 @@ button {
 							<p>Item Number: 0002</p>
 							<p>Description: Maple infused BBQ sauce (24 oz)</p>
 						</td>
-						<td> <button type="button" onclick="alert('Item added to cart')">Add to cart</button> </td>
+						<td> <form action="loginController" method="post">
+						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
+						<p></p>
+						<div class="button-section">
+						<input type="submit" onclick="alert('Item added to cart')" value="Add to Cart">
+						<input type="hidden" name="action" value="add">
+						<input type="hidden" name="ID" value="0002">
+						<input type="hidden" name="cost" value="30.00">
+						</div></form></td>					
 					</tr>
 					<tr>
 						<td><img class="img-responsive" src="assets/img/sampler.png"
@@ -122,7 +138,15 @@ button {
 							<p>Description: Golden, amber, and dark maple syrup sampler
 								(12 oz each)</p>
 						</td>
-						<td> <button type="button" onclick="alert('Item added to cart')">Add to cart</button> </td>
+						<td> <form action="loginController" method="post">
+						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
+						<p></p>
+						<div class="button-section">
+						<input type="submit" onclick="alert('Item added to cart')" value="Add to Cart">
+						<input type="hidden" name="action" value="add">
+						<input type="hidden" name="ID" value="0003">
+						<input type="hidden" name="cost" value="50.00">
+						</div></form></td>
 					</tr>
 					<tr>
 						<td><img class="img-responsive"
@@ -132,9 +156,16 @@ button {
 							<p>Item Number: 0004</p>
 							<p>Description: Pure, granulated, maple sugar (1 lb)</p>
 						</td>
-						<td> <button type="button" onclick="alert('Item added to cart')">Add to cart</button> </td>
+						<td> <form action="loginController" method="post">
+						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
+						<p></p>
+						<div class="button-section">
+						<input type="submit" onclick="alert('Item added to cart')" value="Add to Cart">
+						<input type="hidden" name="action" value="add">
+						<input type="hidden" name="ID" value="0004">
+						<input type="hidden" name="cost" value="25.00">
+						</div></form></td>
 					</tr>
-
 					<tr>
 						<td><img class="img-responsive"
 							src="assets/img/maple_spread.jpg" width="600"></td>
@@ -144,9 +175,16 @@ button {
 							<p>Description: Pure maple syrup spread goes perfectly with
 								morning toast or other baked goods (24 oz)</p>
 						</td>
-						<td> <button type="button" onclick="alert('Item added to cart')">Add to cart</button> </td>
+						<td> <form action="loginController" method="post">
+						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
+						<p></p>
+						<div class="button-section">
+						<input type="submit" onclick="alert('Item added to cart')" value="Add to Cart">
+						<input type="hidden" name="action" value="add">
+						<input type="hidden" name="ID" value="0005">
+						<input type="hidden" name="cost" value="25.00">
+						</div></form></td>
 					</tr>
-
 					<tr>
 						<td><img class="img-responsive"
 							src="assets/img/new_candy.jpg" width="600"></td>
@@ -156,9 +194,16 @@ button {
 							<p>Description: Back again this year by popular demand are
 								our premium maple candies</p>
 						</td>
-						<td> <button type="button" onclick="alert('Item added to cart')">Add to cart</button> </td>
+						<td> <form action="loginController" method="post">
+						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
+						<p></p>
+						<div class="button-section">
+						<input type="submit" onclick="alert('Item added to cart')" value="Add to Cart">
+						<input type="hidden" name="action" value="add">
+						<input type="hidden" name="ID" value="0006">
+						<input type="hidden" name="cost" value="10.00">
+						</div></form></td>
 					</tr>
-
 					<tr>
 						<td><img class="img-responsive"
 							src="assets/img/holiday_present.jpg" width="600"></td>
@@ -170,8 +215,16 @@ button {
 								leaf tree ornament all beautifully wrapped and ready to deliver
 								to friends or family.</p>
 						</td>
-						<td> <button type="button" onclick="alert('Item added to cart')">Add to cart</button> </td>
-					</tr>
+						<td> <form action="loginController" method="post">
+						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
+						<p></p>
+						<div class="button-section">
+						<input type="submit" onclick="alert('Item added to cart')" value="Add to Cart">
+						<input type="hidden" name="action" value="add">
+						<input type="hidden" name="ID" value="0007">
+						<input type="hidden" name="cost" value="100.00">
+						</div></form></td>
+						</tr>
 				</table>
 			</div>
 

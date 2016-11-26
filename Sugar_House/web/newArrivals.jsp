@@ -103,8 +103,6 @@ button {
 							<p>Item Number: 0006</p>
 							<p>Description: Back again this year by popular demand are
 								our premium maple candies</p>
-						</td>
-						<td> <button type="button" onclick="alert('Item added to cart')">Add to cart</button> </td>
 					</tr>
 
 					<tr>
@@ -118,7 +116,6 @@ button {
 								leaf tree ornament all beautifully wrapped and ready to deliver
 								to friends or family</p>
 						</td>
-						<td> <button type="button" onclick="alert('Item added to cart')">Add to cart</button> </td>
 					</tr>
 				</table>
 			</div>

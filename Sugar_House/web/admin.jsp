@@ -1,7 +1,7 @@
 <%-- 
-    Document   : shoppingCart
-    Created on : Nov 7, 2016, 8:41:12 PM
-    Author     : Fenton
+    Document   : admin
+    Created on : Nov 25, 2016, 11:35:00 PM
+    Author     : Snyder
 --%>
 
 <!DOCTYPE html>
@@ -33,23 +33,22 @@
     <![endif]-->
 
 <style>
-table, td, th {
-	border: 1px solid #ddd;
-	text-align: left;
+table, td, th {    
+    border: 1px solid #ddd;
+    text-align: left;
 }
 
 table {
-	border-collapse: collapse;
-	width: 100%;
+    border-collapse: collapse;
+    width: 100%;
 }
 
 th, td {
-	padding: 15px;
+    padding: 15px;
 }
-
-button {
-	width: 100px;
-}
+button { 
+  width:100px; 
+} 
 </style>
 </head>
 
@@ -78,58 +77,29 @@ button {
 	</div>
 	<div class="container">
 		<div class="row centered mt mb">
-			<h2 align="left">Shopping Cart</h2>
 
-			<%@ page import="com.sugarhouse.business.ShoppingCart"%>
-			<%@ page import="java.util.*"%>
-			<%@ page import="javax.servlet.*"%>
 
-			<%
-		session = request.getSession();
-		ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-		ArrayList<String> items = cart.getItems();
-		Double totalCost = cart.getTotalCost();
-		%>
+			<h2 align="left">Administrator View</h2>
 
+			<!--TODO: Display information from the database in a table for the admin to view (placeholders below)-->
+			<h3 align="left">Order History</h3>
 			<table>
 				<tr>
-					<th>Item</th>
-					<th>Quantity</th>
-					<th>Cost</th>
-				</tr>
-				<%
-				for (int i = 0; i < items.size(); i++) {
-				String item = items.get(i);
-				String[] splitItem = item.split(",");
-				String itemQuantity = splitItem[0];
-				String itemID = splitItem[1];
-				Double singleItemCost = Double.parseDouble(splitItem[2]);
-				Double multiItemCost = singleItemCost * Double.parseDouble(itemQuantity); 
-				%>
-
-				<tr>
-					<td><%=itemID%></td>
-					<td><%=itemQuantity%></td>
-					<td><%=multiItemCost%></td>
-				</tr>
-				<%}%>
-				<tr>
-				<td>TOTAL COST</td>
-				<td></td>
-				<td><%=totalCost%></td>
+					<th>User</th>
+					<th>Order Date</th>
+					<th>Order Status</th>
+					<th>Order Cost</th>
 				</tr>
 			</table>
-
-				<form action="loginController" method="POST" style="width: 400px">
-				<p></p>
-				<p></p>
-				<p></p>
-				<div class="button-section">
-					<input type="submit" value="Checkout" style="width: 200px">
-					<input type="hidden" name="action" value="checkout">
-				</div>
-				<p></p>
-			</form>
+			<h3 align="left">Product Availability</h3>
+			<table>
+				<tr>
+					<th>Product ID</th>
+					<th>Product Name</th>
+					<th>Product Availability</th>
+					<th>Amount in Stock</th>
+				</tr>
+			</table>
 
 		</div>
 		<!--/row -->
@@ -144,3 +114,4 @@ button {
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="assets/js/bootstrap.min.js"></script>
 </body>
+</html>

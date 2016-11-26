@@ -1,7 +1,7 @@
 <%-- 
-    Document   : shoppingCart
-    Created on : Nov 7, 2016, 8:41:12 PM
-    Author     : Fenton
+    Document   : checkout
+    Created on : Nov 26, 2016, 3:20:12 AM
+    Author     : Snyder
 --%>
 
 <!DOCTYPE html>
@@ -78,69 +78,50 @@ button {
 	</div>
 	<div class="container">
 		<div class="row centered mt mb">
-			<h2 align="left">Shopping Cart</h2>
+			<h2 align="left">Payment Information</h2>
 
 			<%@ page import="com.sugarhouse.business.ShoppingCart"%>
 			<%@ page import="java.util.*"%>
 			<%@ page import="javax.servlet.*"%>
 
 			<%
-		session = request.getSession();
-		ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-		ArrayList<String> items = cart.getItems();
-		Double totalCost = cart.getTotalCost();
-		%>
+				session = request.getSession();
+				ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+				ArrayList<String> items = cart.getItems();
+				Double totalCost = cart.getTotalCost();
+			%>
 
-			<table>
-				<tr>
-					<th>Item</th>
-					<th>Quantity</th>
-					<th>Cost</th>
-				</tr>
-				<%
-				for (int i = 0; i < items.size(); i++) {
-				String item = items.get(i);
-				String[] splitItem = item.split(",");
-				String itemQuantity = splitItem[0];
-				String itemID = splitItem[1];
-				Double singleItemCost = Double.parseDouble(splitItem[2]);
-				Double multiItemCost = singleItemCost * Double.parseDouble(itemQuantity); 
-				%>
+			<form action="loginController" method="post">
+				<div class="section"></div>
+				<div class="inner-wrap" align="left">
+					<!-- Main text for the confirmation page -->
+					<p>Your total is: $${cart.totalCost}0. Please fill in the
+						payment information below to checkout.</p>
+					<div class="section"></div>
+					<div class="inner-wrap" align="left">
+						<label>Credit Card Type</label>
+						<div class="radioboxes">
+							<input type="radio" name="cardType" checked value="VISA">VISA<br>
+							<input type="radio" name="cardType" value="Mastercard">Mastercard<br>
+							<input type="radio" name="cardType" value="Discover">Discover
+						</div>
+						<label>Credit Card Number <input type="text"
+							name="creditNumber" value="" /></label>
+							<br> 
+							<label>Credit Card
+							Expiration Date (MM/yyyy) <input type="text"
+							name="creditExpiration" value="" />
+						</label>
+					</div>
 
-				<tr>
-					<td><%=itemID%></td>
-					<td><%=itemQuantity%></td>
-					<td><%=multiItemCost%></td>
-				</tr>
-				<%}%>
-				<tr>
-				<td>TOTAL COST</td>
-				<td></td>
-				<td><%=totalCost%></td>
-				</tr>
-			</table>
-
-				<form action="loginController" method="POST" style="width: 400px">
-				<p></p>
-				<p></p>
-				<p></p>
-				<div class="button-section">
-					<input type="submit" value="Checkout" style="width: 200px">
-					<input type="hidden" name="action" value="checkout">
 				</div>
-				<p></p>
+
+				<div class="button-section" align="left">
+					<input type="submit" value="Confirm Order" style="width: 250px">
+					<input type="hidden" name="action" value="confirm">
+				</div>
 			</form>
 
 		</div>
-		<!--/row -->
-	</div>
-	<!--/container -->
-
-
-	<!-- Bootstrap core JavaScript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script src="assets/js/bootstrap.min.js"></script>
 </body>
+</html>

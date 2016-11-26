@@ -13,6 +13,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.sugarhouse.business.ShoppingCart;
 
 /**
  *
@@ -40,6 +43,14 @@ public class loginController extends HttpServlet {
 		if(action.equals("new user")){
 			//Redirect user to registration page if they are new
 			url = "/register.jsp";
+		}
+		if(action.equals("checkout")){
+			//Redirect user to the checkout page
+			url = "/checkout.jsp";
+		}
+		if(action.equals("confirm")){
+			//Redirect user to the thank you page
+			url = "/thankyou.jsp";
 		}
 		if(action.equals("register")){
 			//Get registration parameters
@@ -77,7 +88,42 @@ public class loginController extends HttpServlet {
 	      //If no login issues occur, redirect user to the home page
 	        if(!errMsg.equals(""))
 	            url = "/index.jsp";
+	        //TODO: If the user is an admin, redirect to the Admin View (inventory)
+		}if(action.equals("add")){
+			
+			//TODO: If user is not logged in, redirect to login page
+			
+			String quantityString = request.getParameter("quantity");
+			String productID = request.getParameter("ID");
+			double cost = Double.parseDouble(request.getParameter("cost"));
+			
+			System.out.println("Unit cost: " + cost);
+			System.out.println("quantity: " + quantityString);
+			System.out.println("product ID: " + productID);
 
+			
+			HttpSession session = request.getSession();
+            ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+            if (cart == null) {
+                cart = new ShoppingCart();
+            }
+
+            //if the user enters a negative or invalid quantity,
+            //the quantity is automatically reset to 1.
+            int quantity;
+            try {
+                quantity = Integer.parseInt(quantityString);
+                if (quantity < 0) {
+                    quantity = 1;
+                }
+            } catch (NumberFormatException nfe) {
+                quantity = 1;
+            }
+            cart.addItem(quantity, productID, cost);
+            
+            session.setAttribute("cart", cart);
+            url = "/marketplace.jsp";
+            
 		}
 
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
