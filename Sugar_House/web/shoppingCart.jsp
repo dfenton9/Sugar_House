@@ -85,42 +85,72 @@ button {
 			<%@ page import="javax.servlet.*"%>
 
 			<%
-		session = request.getSession();
-		ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-		ArrayList<String> items = cart.getItems();
-		Double totalCost = cart.getTotalCost();
-		%>
+				session = request.getSession();
+				ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+				ArrayList<String> items = cart.getItems();
+				Double totalCost = cart.getTotalCost();
+
+				if (cart == null || totalCost == 0) {
+			%>
+				<h3 align="left">You have not added anything to the cart. Please visit our
+					marketplace!</h3>
+				<form action="loginController" method="post">
+					<div class="button-section" align="left">
+						<input type="submit" value="Marketplace"> <input
+							type="hidden" name="action" value="marketplace">
+					</div>
+				</form>
+
+			<%
+				} else {
+			%>
 
 			<table>
 				<tr>
 					<th>Item</th>
 					<th>Quantity</th>
 					<th>Cost</th>
+					<th>Edit</th>
 				</tr>
 				<%
-				for (int i = 0; i < items.size(); i++) {
-				String item = items.get(i);
-				String[] splitItem = item.split(",");
-				String itemQuantity = splitItem[0];
-				String itemID = splitItem[1];
-				Double singleItemCost = Double.parseDouble(splitItem[2]);
-				Double multiItemCost = singleItemCost * Double.parseDouble(itemQuantity); 
+					for (int i = 0; i < items.size(); i++) {
+							String item = items.get(i);
+							String[] splitItem = item.split(",");
+							String itemQuantity = splitItem[0];
+							String itemID = splitItem[1];
+							Double singleItemCost = Double.parseDouble(splitItem[2]);
+							Double multiItemCost = singleItemCost * Double.parseDouble(itemQuantity);
 				%>
 
 				<tr>
 					<td><%=itemID%></td>
 					<td><%=itemQuantity%></td>
 					<td><%=multiItemCost%></td>
+					<td>
+						<form action="loginController" method="post">
+							<div class="button-section">
+								<input type="submit" onclick="alert('Item removed from cart')"
+									value="Remove from Cart"> <input type="hidden"
+									name="action" value="remove"> <input type="hidden"
+									name="ID" value="<%=itemID%>"> <input type="hidden"
+									name="cost" value="<%=singleItemCost%>"> <input
+									type="hidden" name="quantity" value="<%=itemQuantity%>">
+							</div>
+						</form>
+					</td>
 				</tr>
-				<%}%>
+				<%
+					}
+				%>
 				<tr>
-				<td>TOTAL COST</td>
-				<td></td>
-				<td><%=totalCost%></td>
+					<td>TOTAL COST</td>
+					<td></td>
+					<td><%=totalCost%></td>
+					<td></td>
 				</tr>
 			</table>
 
-				<form action="loginController" method="POST" style="width: 400px">
+			<form action="loginController" method="POST" style="width: 400px">
 				<p></p>
 				<p></p>
 				<p></p>
@@ -130,7 +160,9 @@ button {
 				</div>
 				<p></p>
 			</form>
-
+			<%
+				}
+			%>
 		</div>
 		<!--/row -->
 	</div>

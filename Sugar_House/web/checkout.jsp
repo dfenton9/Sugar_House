@@ -50,6 +50,11 @@ th, td {
 button {
 	width: 100px;
 }
+
+.ui-datepicker-calendar {
+	display: none;
+}
+​
 </style>
 </head>
 
@@ -106,22 +111,26 @@ button {
 							<input type="radio" name="cardType" value="Discover">Discover
 						</div>
 						<label>Credit Card Number <input type="text"
-							name="creditNumber" value="" /></label>
-							<br> 
-							<label>Credit Card
-							Expiration Date (MM/yyyy) <input type="text"
-							name="creditExpiration" value="" />
+							name="creditNumber" value="" maxlength="10" id="creditNumber" /></label>
+
+						<br> <label>Credit Card Expiration Date (MM/yyyy) <script
+								type="text/javascript" src="jquery-1.12.4.js"></script> <script
+								type="text/javascript" src="jquery-ui.js"></script> <script
+								type="text/javascript" src="calendar.js"></script> <input
+							name="date" type="text" id='txtDate' onkeydown="return false"
+							value="12/2020" maxlength="7">
+
 						</label>
 					</div>
-
 				</div>
 
 				<div class="button-section" align="left">
-					<input type="submit" value="Confirm Order" style="width: 250px">
-					<input type="hidden" name="action" value="confirm">
+					<input type="submit" value="Confirm Order" style="width: 250px"
+						onclick="isNumeric()"> <input type="hidden" name="action"
+						value="confirm">
 				</div>
 			</form>
-
 		</div>
+	</div>
 </body>
 </html>
