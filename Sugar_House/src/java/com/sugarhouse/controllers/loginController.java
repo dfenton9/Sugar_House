@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.sugarhouse.business.ShoppingCart;
+import com.sugarhouse.database.DatabaseCreator;
 
 /**
  *
@@ -40,6 +41,12 @@ public class loginController extends HttpServlet {
 		String url = "/index.jsp";
 
 		String action = request.getParameter("action");
+                HttpSession session = request.getSession();
+                if(session.getAttribute("databaseConnection") == null)
+                {
+                   session.setAttribute("databaseConnection", new DatabaseCreator());
+                }
+                DatabaseCreator dc = (DatabaseCreator)session.getAttribute("databaseConnection");
 
 		if(action.equals("new user")){
 			//Redirect user to registration page if they are new
@@ -94,30 +101,48 @@ public class loginController extends HttpServlet {
 			//Ensure the same email/password was entered in confirmation field
 			if(!email.equals(confirmEmail)){
 				errMsg += "Emails do not match. ";
-				return;}
+				return;
+                        }
 
 			if(!password.equals(confirmPassword)){
 				errMsg += "Passwords do not match. ";
 				return;
 			}
+                        
+                        if(!dc.registerUser(login, password, email))
+                        {
+                            errMsg += "Not able to register user.";
+                            
+                            System.out.println("Error registering user!");
+                            return;
+                        }
 			//If no registration issues occur, redirect user to login
 			if(!errMsg.equals(""))
-				url = "/logIn.jsp";
-
-			//TODO: Enter user into database
+                        {
+                            
+                            url = "/logIn.jsp";
+                                
+                        }
 		}
 		if(action.equals("login")){
 			String login = request.getParameter("loginId");
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
-
-			//TODO:Check if username/password combination is correct
+                        boolean isValidUser = dc.verifiyUser(login, password);
 
 			//If no login issues occur, redirect user to the home page
-			if(!errMsg.equals(""))
-				url = "/index.jsp";
+			if(isValidUser)
+                        {
+                            url = "/index.jsp";
+                        }else
+                        {
+                            errMsg = "Invlaid Login or Password.";
+                            url = "/logIn.jsp";
+                            System.out.println("Error verifying user!");
+                        }
 			//TODO: If the user is an admin, redirect to the Admin View (inventory)
-		}if(action.equals("add") || action.equals("remove")){
+		}
+                if(action.equals("add") || action.equals("remove")){
 
 			//TODO: If user is not logged in, redirect to login page
 
@@ -130,7 +155,7 @@ public class loginController extends HttpServlet {
 			System.out.println("product ID: " + productID);
 
 
-			HttpSession session = request.getSession();
+			
 			ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
 			if (cart == null) {
 				cart = new ShoppingCart();

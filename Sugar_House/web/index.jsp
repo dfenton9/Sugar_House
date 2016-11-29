@@ -1,3 +1,4 @@
+<%@page import="com.sugarhouse.database.DatabaseCreator" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -29,6 +30,17 @@
   </head>
 
   <body>
+      <% 
+          if(session.getAttribute("databaseConnection") == null)
+          {
+             session.setAttribute("databaseConnection", new DatabaseCreator());
+             System.out.println("Was Null");
+          }
+          System.out.println("Java Hit!");
+          
+          DatabaseCreator dc = (DatabaseCreator)session.getAttribute("databaseConnection");
+          dc.getUsers();
+      %>
 
     <!-- Static navbar -->
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
