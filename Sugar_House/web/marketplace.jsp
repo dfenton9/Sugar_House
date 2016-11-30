@@ -1,3 +1,5 @@
+<%@page import="com.sugarhouse.business.Product"%>
+<%@page import="com.sugarhouse.database.DatabaseCreator"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -48,7 +50,14 @@ button {
 </style>
 
 <body>
-
+      <% 
+          if(session.getAttribute("databaseConnection") == null)
+          {
+             session.setAttribute("databaseConnection", new DatabaseCreator());
+          }
+          
+          DatabaseCreator dc = (DatabaseCreator)session.getAttribute("databaseConnection");
+      %>
 	<!-- Static navbar -->
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="container">
@@ -93,138 +102,27 @@ button {
 			<div class="col-lg-10 col-lg-offset-1 mt">
 
 				<table>
+                                    <% for(Product prod : dc.getProducts("name")) { %>
 					<tr>
-						<td><img class="img-responsive" src="assets/img/spoon.jpg"
+						<td><img class="img-responsive" src="<%=prod.getImageSrc()%>"
 							width="600"></td>
 						<td align="left">
-							<p>Cost: $50.00</p>
-							<p>Item Number: 0001</p>
-							<p>Description: 100% grade A organic maple syrup (36 oz)</p>
+                                                        <p><%= prod.getName() %></p>
+							<p>Cost: $<%=prod.getCost()%></p>
+							<p>Description: <%=prod.getDescription() %> </p>
 						</td>
-						<td> <form action="loginController" method="post">
+						<td> <form action="loginController" method="get">
 						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
 						<p></p>
 						<div class="button-section">
 						<input type="submit" onclick="alert('Item added to cart')" value="Add to Cart">
 						<input type="hidden" name="action" value="add">
-						<input type="hidden" name="ID" value="0001">
-						<input type="hidden" name="cost" value="50.00">
+                                                <input type="hidden" name="name" value="<%=prod.getName()%>">
+						<input type="hidden" name="ID" value="<%=prod.getId()%>">
+						<input type="hidden" name="cost" value="<%=prod.getCost()%>">
 						</div></form></td>					
 					</tr>
-					<tr>
-						<td><img class="img-responsive"
-							src="assets/img/maple_bbq.jpg" width="600"></td>
-						<td align="left">
-							<p>Cost: $30.00</p>
-							<p>Item Number: 0002</p>
-							<p>Description: Maple infused BBQ sauce (24 oz)</p>
-						</td>
-						<td> <form action="loginController" method="post">
-						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
-						<p></p>
-						<div class="button-section">
-						<input type="submit" onclick="alert('Item added to cart')" value="Add to Cart">
-						<input type="hidden" name="action" value="add">
-						<input type="hidden" name="ID" value="0002">
-						<input type="hidden" name="cost" value="30.00">
-						</div></form></td>					
-					</tr>
-					<tr>
-						<td><img class="img-responsive" src="assets/img/sampler.png"
-							width="600"></td>
-						<td align="left">
-							<p>Cost: $50.00</p>
-							<p>Item Number: 0003</p>
-							<p>Description: Golden, amber, and dark maple syrup sampler
-								(12 oz each)</p>
-						</td>
-						<td> <form action="loginController" method="post">
-						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
-						<p></p>
-						<div class="button-section">
-						<input type="submit" onclick="alert('Item added to cart')" value="Add to Cart">
-						<input type="hidden" name="action" value="add">
-						<input type="hidden" name="ID" value="0003">
-						<input type="hidden" name="cost" value="50.00">
-						</div></form></td>
-					</tr>
-					<tr>
-						<td><img class="img-responsive"
-							src="assets/img/maple_sugar.jpg" width="600"></td>
-						<td align="left">
-							<p>Cost: $25.00</p>
-							<p>Item Number: 0004</p>
-							<p>Description: Pure, granulated, maple sugar (1 lb)</p>
-						</td>
-						<td> <form action="loginController" method="post">
-						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
-						<p></p>
-						<div class="button-section">
-						<input type="submit" onclick="alert('Item added to cart')" value="Add to Cart">
-						<input type="hidden" name="action" value="add">
-						<input type="hidden" name="ID" value="0004">
-						<input type="hidden" name="cost" value="25.00">
-						</div></form></td>
-					</tr>
-					<tr>
-						<td><img class="img-responsive"
-							src="assets/img/maple_spread.jpg" width="600"></td>
-						<td align="left">
-							<p>Cost: $25.00</p>
-							<p>Item Number: 0005</p>
-							<p>Description: Pure maple syrup spread goes perfectly with
-								morning toast or other baked goods (24 oz)</p>
-						</td>
-						<td> <form action="loginController" method="post">
-						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
-						<p></p>
-						<div class="button-section">
-						<input type="submit" onclick="alert('Item added to cart')" value="Add to Cart">
-						<input type="hidden" name="action" value="add">
-						<input type="hidden" name="ID" value="0005">
-						<input type="hidden" name="cost" value="25.00">
-						</div></form></td>
-					</tr>
-					<tr>
-						<td><img class="img-responsive"
-							src="assets/img/new_candy.jpg" width="600"></td>
-						<td align="left">
-							<p>Cost: $10.00</p>
-							<p>Item Number: 0006</p>
-							<p>Description: Back again this year by popular demand are
-								our premium maple candies</p>
-						</td>
-						<td> <form action="loginController" method="post">
-						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
-						<p></p>
-						<div class="button-section">
-						<input type="submit" onclick="alert('Item added to cart')" value="Add to Cart">
-						<input type="hidden" name="action" value="add">
-						<input type="hidden" name="ID" value="0006">
-						<input type="hidden" name="cost" value="10.00">
-						</div></form></td>
-					</tr>
-					<tr>
-						<td><img class="img-responsive"
-							src="assets/img/holiday_present.jpg" width="600"></td>
-						<td align="left">
-							<p>Cost: $100.00</p>
-							<p>Item Number: 0007</p>
-							<p>Description: Our holiday package comes with our signature
-								maple syrup, 3 boxes of maple candies, and a gold plated maple
-								leaf tree ornament all beautifully wrapped and ready to deliver
-								to friends or family.</p>
-						</td>
-						<td> <form action="loginController" method="post">
-						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
-						<p></p>
-						<div class="button-section">
-						<input type="submit" onclick="alert('Item added to cart')" value="Add to Cart">
-						<input type="hidden" name="action" value="add">
-						<input type="hidden" name="ID" value="0007">
-						<input type="hidden" name="cost" value="100.00">
-						</div></form></td>
-						</tr>
+                                    <%}%>
 				</table>
 			</div>
 

@@ -77,6 +77,9 @@ h1 {
 		<div class="row centered mt mb">
 			<div class="col-lg-8 col-lg-offset-2">
 				<p>Sugar House is a family owned company founded in 1920.</p>
+                                <p>Our product reaches back several generations and over the years the skill has been passed down to younger generations through long nights spent in Sugar House. Over the years the techniques have changed some but the end results is a purely sweet and delicious product.</p>
+				<p>The current farm is over 200 years old and operates on about 1000 taps. Some of the taps are still buckets, but to help with the efficency of collecting the sap more sap lines are being installed each year.</p>
+                                <p>We hope you enjoy our product and continue to spread its cheer by using it as gifts. If you are unsatisfied, please do not hesitate to contact us at <a href="mailto:mapleMaker@sugarhouse.com">mapleMaker@sugarhouse.com</a></p>
 			</div>
 
 		</div><!--/row -->

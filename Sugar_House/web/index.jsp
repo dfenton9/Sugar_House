@@ -34,12 +34,14 @@
           if(session.getAttribute("databaseConnection") == null)
           {
              session.setAttribute("databaseConnection", new DatabaseCreator());
-             System.out.println("Was Null");
           }
-          System.out.println("Java Hit!");
+          
+          if(session.getAttribute("isAdmin") == null)
+          {
+             session.setAttribute("isAdmin", "no");
+          }
           
           DatabaseCreator dc = (DatabaseCreator)session.getAttribute("databaseConnection");
-          dc.getUsers();
       %>
 
     <!-- Static navbar -->
@@ -58,6 +60,9 @@
             <li class="active"><a href="index.jsp">Home</a></li>
             <li><a href="logIn.jsp">Login</a></li>
             <li><a href="shoppingCart.jsp">My Cart</a></li>
+            <% if(session.getAttribute("isAdmin").equals("yes")){ %>
+            <li><a href="admin.jsp">Admin</a></li>
+            <%}%>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

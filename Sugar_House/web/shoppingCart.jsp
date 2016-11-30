@@ -107,6 +107,7 @@ button {
 
 			<table>
 				<tr>
+                                        <th>Name</th>
 					<th>Item</th>
 					<th>Quantity</th>
 					<th>Cost</th>
@@ -116,13 +117,15 @@ button {
 					for (int i = 0; i < items.size(); i++) {
 							String item = items.get(i);
 							String[] splitItem = item.split(",");
-							String itemQuantity = splitItem[0];
-							String itemID = splitItem[1];
-							Double singleItemCost = Double.parseDouble(splitItem[2]);
+                                                        String itemName = splitItem[0];
+							String itemQuantity = splitItem[1];
+							String itemID = splitItem[2];
+							Double singleItemCost = Double.parseDouble(splitItem[3]);
 							Double multiItemCost = singleItemCost * Double.parseDouble(itemQuantity);
 				%>
 
 				<tr>
+                                        <td><%=itemName %></td>
 					<td><%=itemID%></td>
 					<td><%=itemQuantity%></td>
 					<td><%=multiItemCost%></td>
@@ -143,6 +146,7 @@ button {
 					}
 				%>
 				<tr>
+                                        <td></td>
 					<td>TOTAL COST</td>
 					<td></td>
 					<td><%=totalCost%></td>

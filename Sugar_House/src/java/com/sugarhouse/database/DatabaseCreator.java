@@ -5,12 +5,15 @@
  */
 package com.sugarhouse.database;
 
+import com.sugarhouse.business.Product;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -72,10 +75,11 @@ public class DatabaseCreator {
             ex.printStackTrace();
         }
         
-        createTables();
+        createUsers();
+        createInventory();
     }
     
-    private void createTables()
+    private void createUsers()
     {
         Statement stmt = null;
         try {
@@ -89,18 +93,9 @@ public class DatabaseCreator {
              +"PASSWORD VARCHAR(20),"
              +"EMAIL VARCHAR(60))");
             System.out.println("Table was created!");
-            stmt.close();
-            stmt = null;
-
-            stmt = conn.createStatement();
+            
             stmt.execute("INSERT INTO USERS VALUES (1,'superuser','easyAce123','super.user@foo.com')");
-            stmt.close();
-            stmt = null;
-
-            stmt = conn.createStatement();
             stmt.execute("INSERT INTO USERS VALUES (2,'admin','admin1234','admin.user@foo.com')");
-            stmt.close();
-            stmt = null;
            }
            
         } catch (SQLException ex) {
@@ -222,20 +217,34 @@ public class DatabaseCreator {
         ResultSet ret = null;
         try {
             stmt = conn.createStatement();
-            int newId;
-            int currentMax = 0;
-            ret = stmt.executeQuery("SELECT ID FROM USERS WHERE id=(SELECT MAX(id) FROM USERS)");
+            // Check if login currently exists in database
+            ret = stmt.executeQuery("SELECT count(*) AS rowcount FROM USERS WHERE LOGIN_ID='" + login + "'");
+            int count = -1;
             while(ret.next())
             {
-                currentMax = ret.getInt(1);
+                count = ret.getInt(1);
+                System.out.println("COUNT: " + count);
                  
             }
-            newId = currentMax + 1;
             
-            System.out.println("ID: " + newId + ", Login: " + login + ", PW: " + password + ", Email: " + email);
-            stmt.execute("INSERT INTO USERS (ID, LOGIN_ID, PASSWORD, EMAIL) VALUES ("+ newId+ ",'" + login +"','" + password +"','"+ email +"')");
-            retVal = true;
-            
+            if(count == 0)
+            {
+                int newId;
+                int currentMax = 0;
+                //Calculate latest ID value
+                ret = stmt.executeQuery("SELECT ID FROM USERS WHERE id=(SELECT MAX(id) FROM USERS)");
+                while(ret.next())
+                {
+                    currentMax = ret.getInt(1);
+
+                }
+                newId = currentMax + 1;
+
+                System.out.println("ID: " + newId + ", Login: " + login + ", PW: " + password + ", Email: " + email);
+                //Insert new user into table with all their information
+                stmt.execute("INSERT INTO USERS (ID, LOGIN_ID, PASSWORD, EMAIL) VALUES ("+ newId+ ",'" + login +"','" + password +"','"+ email +"')");
+                retVal = true;
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }finally
@@ -254,5 +263,115 @@ public class DatabaseCreator {
         }
         
         return retVal;
+    }
+    
+    private void createInventory()
+    {
+                Statement stmt = null;
+        try {
+            
+           stmt = conn.createStatement();
+           
+           if(stmt != null){
+            stmt.executeUpdate("CREATE TABLE PRODUCTS ( "
+             +"ID INTEGER not null primary key,"
+             +"PROD_NAME VARCHAR(48),"
+             +"PROD_DESCRIPTION VARCHAR(512),"
+             +"PROD_COST DECIMAL(6,2),"
+             +"PROD_INVENTORY INTEGER,"
+             +"PROD_IMG_SRC VARCHAR(512))");
+            System.out.println("Table was created!");
+            
+            
+            stmt.execute("INSERT INTO PRODUCTS VALUES (1,'Maple Leaves','1 Dozen Pure Maple Leave Candies', 6.99,200,'assets/img/new_candy.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (2,'Fancy Syrup','1 Gallon of Pure Vermont Fancy Maple Syrup',48.99, 300,'assets/img/spoon.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (3,'Fancy Syrup','1 Quart of Pure Vermont Fancy Maple Syrup',32.99, 300,'assets/img/spoon.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (4,'Fancy Syrup','1 Pint of Pure Vermont Fancy Maple Syrup',14.99, 300,'assets/img/spoon.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (5,'Syrup Sampler','Golden, Amber, and Dark Maple Syrup Sampler (12oz ea.)',12.99, 300,'assets/img/sampler.png')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (6,'Maple BBQ Sauce','Maple infused BBQ Sauce (24oz)',10.99, 300,'assets/img/maple_bbq.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (7,'Maple Cream','Pure Maple Syrup Spread goes perfectly with morning toast or other baked goods (8oz)',6.99, 300,'assets/img/maple_spread.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (8,'Maple Butter','Pure Maple Syrup Spread goes perfectly with morning toast or other baked goods (8oz)',7.99, 300,'assets/img/maple_spread.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (9,'Maple Sugar','Pure, Granulated, Maple Sugar (16oz)',15.99, 300,'assets/img/maple_sugar.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (10,'Maple Basket','This holiday treat contains: Maple Cream (8oz), Maple Butter (8oz), Maple Leaves (12pc), 1 Pint of Syrup, Pancake Mix, and Maple Fudge (8oz).',59.99, 300,'assets/img/maple_basket.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (11,'Maple Fudge','Pure Maple Fudge (8oz)',8.99, 300,'assets/img/maple_fudge.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (12,'Medium Amber Syrup','1 Gallon of Pure Vermont Medium Amber Maple Syrup',48.99, 300,'assets/img/spoon.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (13,'Medium Amber Syrup','1 Quart of Pure Vermont Medium Amber Maple Syrup',32.99, 300,'assets/img/spoon.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (14,'Medium Amber Syrup','1 Pint of Pure Vermont Medium Amber Maple Syrup',14.99, 300,'assets/img/spoon.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (15,'Dark Amber Syrup','1 Gallon of Pure Vermont Dark Amber Maple Syrup',48.99, 300,'assets/img/spoon.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (16,'Dark Amber Syrup','1 Quart of Pure Vermont Dark Amber Maple Syrup',32.99, 300,'assets/img/spoon.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (17,'Dark Amber Syrup','1 Pint of Pure Vermont Dark Amber Maple Syrup',14.99, 300,'assets/img/spoon.jpg')");
+           }
+           
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        finally
+        {
+           // Release resources
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+        public List<Product> getProducts(String order)
+    {
+        String orderBy = "PROD_NAME";
+        if(order.equals("id"))
+            orderBy = "ID";
+        
+        Statement stmt = null;
+        ResultSet ret = null;
+        List<Product> products = new ArrayList<Product>();
+        try {
+            stmt = conn.createStatement();
+            
+            ret = stmt.executeQuery("select * from products order by " + orderBy + " asc");
+            ResultSetMetaData rsmd = ret.getMetaData();
+            int numberCols = rsmd.getColumnCount();
+            for (int i=1; i<=numberCols; i++)
+            {
+                //print Column Names
+                System.out.print(rsmd.getColumnLabel(i)+"\t\t");  
+            }
+
+            System.out.println("\n-------------------------------------------------");
+
+            while(ret.next())
+            {
+                int id = ret.getInt(1);
+                String name = ret.getString(2);
+                String desc = ret.getString(3);
+                double cost = ret.getDouble(4);
+                int inventory = ret.getInt(5);
+                String imgSrc = ret.getString(6);
+                System.out.println(id + "\t\t" +name + "\t\t" + desc + "\t\t" + cost );
+                Product prod = new Product(id, name, desc, cost, inventory, imgSrc);
+                products.add(prod);
+            }            
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally
+        {
+            try {
+                if(ret != null)
+                    ret.close();
+                if(stmt != null)
+                    stmt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            
+            ret = null;
+            stmt = null;
+        }
+        
+        return products;
+        
     }
 }

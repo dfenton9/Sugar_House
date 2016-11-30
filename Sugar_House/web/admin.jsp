@@ -4,6 +4,8 @@
     Author     : Snyder
 --%>
 
+<%@page import="com.sugarhouse.business.Product"%>
+<%@page import="com.sugarhouse.database.DatabaseCreator"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,6 +55,14 @@ button {
 </head>
 
 <body>
+    <% 
+          if(session.getAttribute("databaseConnection") == null)
+          {
+             session.setAttribute("databaseConnection", new DatabaseCreator());
+          }
+          
+          DatabaseCreator dc = (DatabaseCreator)session.getAttribute("databaseConnection");
+      %>
 
 	<!-- Static navbar -->
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -99,6 +109,14 @@ button {
 					<th>Product Availability</th>
 					<th>Amount in Stock</th>
 				</tr>
+                            <% for(Product prod : dc.getProducts("id")) { %>
+                                <tr>
+                                    <td><%= prod.getId() %></td>
+                                    <td><%= prod.getName() %></td>
+                                    <td><%= (prod.isAvailable()? "Yes" : "No") %></td>
+                                    <td><%= prod.getInventory() %></td>
+                                </tr>
+                            <%}%>
 			</table>
 
 		</div>

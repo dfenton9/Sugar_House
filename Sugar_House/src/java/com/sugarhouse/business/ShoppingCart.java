@@ -27,15 +27,15 @@ public class ShoppingCart implements Serializable {
 		totalCost = 0;
 	}
 
-	public void addItem(int quantity, String productID, double unitCost) {
-		String order = quantity + "," + productID + "," + unitCost;
+	public void addItem(int quantity, int productID, double unitCost, String name) {
+		String order = name + "," +quantity + "," + productID + "," + unitCost;
 		items.add(order);
 		totalCost = totalCost + (quantity * unitCost);
 		return;
 	}
 
-	public void removeItem(int quantity, String productID, double unitCost) {
-		String order = quantity + "," + productID + "," + unitCost;
+	public void removeItem(int quantity, int productID, double unitCost, String name) {
+		String order = name + "," + quantity + "," + productID + "," + unitCost;
 		items.remove(order);
 		totalCost = totalCost - (quantity * unitCost);
 		return;

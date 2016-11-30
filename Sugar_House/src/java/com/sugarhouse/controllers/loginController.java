@@ -41,6 +41,7 @@ public class loginController extends HttpServlet {
 		String url = "/index.jsp";
 
 		String action = request.getParameter("action");
+                
                 HttpSession session = request.getSession();
                 if(session.getAttribute("databaseConnection") == null)
                 {
@@ -61,6 +62,7 @@ public class loginController extends HttpServlet {
 			url = "/marketplace.jsp";
 		}
 		if(action.equals("confirm")){
+                        errMsg = "";
 			String creditType = request.getParameter("cardType");
 			String creditNumber = request.getParameter("creditNumber");
 			String expirationDate = request.getParameter("date");
@@ -80,9 +82,12 @@ public class loginController extends HttpServlet {
 				System.out.println("Invalid credit number");
 				return;
 			}
-			if(!errMsg.equals("")){
+			if(errMsg.equals(""))
+                        {
+                            System.out.println("Redirecting to Thank You page!");
 				//Redirect user to the thank you page
-				url = "/thankyou.jsp";}
+				url = "/thankyou.jsp";
+                        }
 		}
 		if(action.equals("register")){
 			//Get registration parameters
@@ -133,6 +138,14 @@ public class loginController extends HttpServlet {
 			//If no login issues occur, redirect user to the home page
 			if(isValidUser)
                         {
+                            if(login.equals("admin"))
+                            {
+                                session.setAttribute("isAdmin", "yes");
+                            }
+                            else
+                            {
+                                session.setAttribute("isAdmin", "no");
+                            }
                             url = "/index.jsp";
                         }else
                         {
@@ -147,8 +160,9 @@ public class loginController extends HttpServlet {
 			//TODO: If user is not logged in, redirect to login page
 
 			String quantityString = request.getParameter("quantity");
-			String productID = request.getParameter("ID");
+			int productID = Integer.parseInt(request.getParameter("ID"));
 			double cost = Double.parseDouble(request.getParameter("cost"));
+                        String name = request.getParameter("name");
 
 			System.out.println("Unit cost: " + cost);
 			System.out.println("quantity: " + quantityString);
@@ -173,17 +187,17 @@ public class loginController extends HttpServlet {
 				quantity = 1;
 			}
 			if(action.equals("add")){
-				cart.addItem(quantity, productID, cost);
+				cart.addItem(quantity, productID, cost, name);
 				url = "/marketplace.jsp";
 			}
 			if(action.equals("remove")){
-				cart.removeItem(quantity, productID, cost);
+				cart.removeItem(quantity, productID, cost, name);
 				url = "/shoppingCart.jsp";
 			}
 			session.setAttribute("cart", cart);
 
 		}
-
+                System.out.println("This is the URL: " + url);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
 		dispatcher.forward(request, response); 
 	}
