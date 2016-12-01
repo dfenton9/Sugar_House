@@ -31,15 +31,25 @@
 
   <body>
       <% 
-          if(session.getAttribute("databaseConnection") == null)
-          {
-             session.setAttribute("databaseConnection", new DatabaseCreator());
-          }
+        if(session.getAttribute("databaseConnection") == null)
+        {
+           session.setAttribute("databaseConnection", new DatabaseCreator());
+        }
+
+        if(session.getAttribute("isAdmin") == null)
+        {
+           session.setAttribute("isAdmin", "no");
+        }
           
-          if(session.getAttribute("isAdmin") == null)
-          {
-             session.setAttribute("isAdmin", "no");
-          }
+        if(session.getAttribute("Login") == null)
+        {
+           session.setAttribute("Login", "false");
+        }
+        
+        if(session.getAttribute("User") == null)
+        {
+           session.setAttribute("User", null);
+        }
           
           DatabaseCreator dc = (DatabaseCreator)session.getAttribute("databaseConnection");
       %>
@@ -58,10 +68,14 @@
         <div id="nav" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-left">
             <li class="active"><a href="index.jsp">Home</a></li>
-            <li><a href="logIn.jsp">Login</a></li>
+            <% if(session.getAttribute("Login").equals("true")){ %>
+                <li><a href="<%=request.getContextPath()%>/loginController?action=logout">Logout</a></li>
+            <%}else{%>
+                <li><a href="logIn.jsp">Login</a></li>
+            <%}%>
             <li><a href="shoppingCart.jsp">My Cart</a></li>
             <% if(session.getAttribute("isAdmin").equals("yes")){ %>
-            <li><a href="admin.jsp">Admin</a></li>
+                <li><a href="admin.jsp">Admin</a></li>
             <%}%>
           </ul>
         </div><!--/.nav-collapse -->
@@ -73,7 +87,12 @@
 	    <div class="container">
 			<div class="row">
 				<div class="col-lg-10 col-lg-offset-3">
-					<h4>Welcome to</h4>
+					<h4>
+                                            <% if(session.getAttribute("User") != null){%>
+                                            <%=session.getAttribute("User")%>
+                                            <%}%>
+                                            Welcome to
+                                        </h4>
 					<h1>SUGAR HOUSE</h1>
 				</div>
 			</div><!--/row -->

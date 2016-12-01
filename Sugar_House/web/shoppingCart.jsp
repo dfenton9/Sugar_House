@@ -86,11 +86,19 @@ button {
 
 			<%
 				session = request.getSession();
-				ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-				ArrayList<String> items = cart.getItems();
+                                ShoppingCart cart;
+                                if(session.getAttribute("cart") == null)
+                                {
+                                    cart = new ShoppingCart();
+                                     
+                                }else
+                                {
+                                    cart = (ShoppingCart)session.getAttribute("cart");
+                                }
 				Double totalCost = cart.getTotalCost();
+                                ArrayList<String> items = cart.getItems();
 
-				if (cart == null || totalCost == 0) {
+				if (items.isEmpty() || totalCost == 0) {
 			%>
 				<h3 align="left">You have not added anything to the cart. Please visit our
 					marketplace!</h3>
@@ -132,12 +140,12 @@ button {
 					<td>
 						<form action="loginController" method="post">
 							<div class="button-section">
-								<input type="submit" onclick="alert('Item removed from cart')"
-									value="Remove from Cart"> <input type="hidden"
-									name="action" value="remove"> <input type="hidden"
-									name="ID" value="<%=itemID%>"> <input type="hidden"
-									name="cost" value="<%=singleItemCost%>"> <input
-									type="hidden" name="quantity" value="<%=itemQuantity%>">
+								<input type="submit" onclick="alert('Item removed from cart')" value="Remove from Cart"> 
+                                                                <input type="hidden" name="action" value="remove"> 
+                                                                <input type="hidden" name='name' value="<%=itemName%>">
+                                                                <input type="hidden" name="ID" value="<%=itemID%>"> 
+                                                                <input type="hidden" name="cost" value="<%=singleItemCost%>"> 
+                                                                <input type="hidden" name="quantity" value="<%=itemQuantity%>">
 							</div>
 						</form>
 					</td>

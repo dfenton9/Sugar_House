@@ -29,7 +29,10 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-</head>
+<script type="text/javascript" src="inputValidation.js">
+	
+</script>
+
 <style>
 table, td, th {    
     border: 1px solid #ddd;
@@ -48,6 +51,9 @@ button {
   width:100px; 
 } 
 </style>
+</head>
+
+
 
 <body>
       <% 
@@ -100,9 +106,12 @@ button {
 				<p>Sugar House is pleased to provide a wide selection of high quality maple products.</p>
 			</div>
 			<div class="col-lg-10 col-lg-offset-1 mt">
-
+                            <% if(session.getAttribute("ErrorMsg") != null && !session.getAttribute("ErrorMsg").equals("")){%>
+                                <div style="color:red;"><%=session.getAttribute("ErrorMsg")%></div>
+                            <%} session.setAttribute("ErrorMsg","");%>
 				<table>
-                                    <% for(Product prod : dc.getProducts("name")) { %>
+                                    <% int index = 0;
+                                        for(Product prod : dc.getProducts("name")) { %>
 					<tr>
 						<td><img class="img-responsive" src="<%=prod.getImageSrc()%>"
 							width="600"></td>
@@ -110,12 +119,15 @@ button {
                                                         <p><%= prod.getName() %></p>
 							<p>Cost: $<%=prod.getCost()%></p>
 							<p>Description: <%=prod.getDescription() %> </p>
+                                                        <% if(prod.getInventory() < 10) { %>
+                                                        <p style="color:green;">Only <%= prod.getInventory() %> left in stock!</p>
+                                                        <% } %>
 						</td>
 						<td> <form action="loginController" method="get">
 						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
 						<p></p>
 						<div class="button-section">
-						<input type="submit" onclick="alert('Item added to cart')" value="Add to Cart">
+                                                    <input type="submit" value="Add to Cart" <%if(!prod.isAvailable()){%> disabled<%}%>>
 						<input type="hidden" name="action" value="add">
                                                 <input type="hidden" name="name" value="<%=prod.getName()%>">
 						<input type="hidden" name="ID" value="<%=prod.getId()%>">

@@ -31,14 +31,13 @@ public class ShoppingCart implements Serializable {
 		String order = name + "," +quantity + "," + productID + "," + unitCost;
 		items.add(order);
 		totalCost = totalCost + (quantity * unitCost);
-		return;
 	}
 
 	public void removeItem(int quantity, int productID, double unitCost, String name) {
 		String order = name + "," + quantity + "," + productID + "," + unitCost;
-		items.remove(order);
+		boolean wasRemoved = items.remove(order);
+                System.out.println("Was (" + order + ") Removed? " + wasRemoved);
 		totalCost = totalCost - (quantity * unitCost);
-		return;
 	}
     public ArrayList<String> getItems() {
         return items;
@@ -52,5 +51,11 @@ public class ShoppingCart implements Serializable {
     }
     public void setTotalCost(Double totalCost){
     	this.totalCost = totalCost;
+    }
+    
+    public void resetCart()
+    {
+        this.items.clear();
+        this.totalCost = 0;
     }
 }

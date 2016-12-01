@@ -66,6 +66,9 @@ th, td {
 	</div>
 	<div class="container">
 		<div class="row centered mt mb">
+                    <% if(session.getAttribute("ErrorMsg") != null && !session.getAttribute("ErrorMsg").equals("")){%>
+                        <div style="color:green;"><%=session.getAttribute("ErrorMsg")%></div>
+                    <%} session.setAttribute("ErrorMsg","");%>
 			<form action="loginController" method="POST"
 				onsubmit="return inputValidation()">
 

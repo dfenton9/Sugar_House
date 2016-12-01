@@ -92,7 +92,6 @@ public class DatabaseCreator {
              +"LOGIN_ID VARCHAR(30),"
              +"PASSWORD VARCHAR(20),"
              +"EMAIL VARCHAR(60))");
-            System.out.println("Table was created!");
             
             stmt.execute("INSERT INTO USERS VALUES (1,'superuser','easyAce123','super.user@foo.com')");
             stmt.execute("INSERT INTO USERS VALUES (2,'admin','admin1234','admin.user@foo.com')");
@@ -122,15 +121,6 @@ public class DatabaseCreator {
             stmt = conn.createStatement();
             
             ret = stmt.executeQuery("select * from users");
-            ResultSetMetaData rsmd = ret.getMetaData();
-            int numberCols = rsmd.getColumnCount();
-            for (int i=1; i<=numberCols; i++)
-            {
-                //print Column Names
-                System.out.print(rsmd.getColumnLabel(i)+"\t\t");  
-            }
-
-            System.out.println("\n-------------------------------------------------");
 
             while(ret.next())
             {
@@ -138,7 +128,6 @@ public class DatabaseCreator {
                 String login = ret.getString(2);
                 String pw = ret.getString(3);
                 String email = ret.getString(4);
-                System.out.println(id + "\t\t" +login + "\t\t" + pw + "\t\t" + email);
             }            
             
         } catch (SQLException ex) {
@@ -160,9 +149,9 @@ public class DatabaseCreator {
         
     }
     
-    public boolean verifiyUser(String login, String password)
+    public String verifiyUser(String login, String password)
     {
-        boolean retVal = false;
+        String retVal = null;
         
                 Statement stmt = null;
         ResultSet ret = null;
@@ -171,23 +160,13 @@ public class DatabaseCreator {
             
             System.out.println("Login: " + login + ", PW: " + password);
             ret = stmt.executeQuery("select LOGIN_ID from users where (login_id ='" + login +"' and password ='" + password +"')");
-            ResultSetMetaData rsmd = ret.getMetaData();
-            int numberCols = rsmd.getColumnCount();
 
-            for (int i=1; i<=numberCols; i++)
-            {
-                //print Column Names
-                System.out.print(rsmd.getColumnLabel(i)+"\t\t");  
-            }
-
-            System.out.println("\n-------------------------------------------------");
-
+                String login_id = null;
                 while(ret.next())
                 {
-                    String login_id = ret.getString(1);
-                    System.out.println(login_id);
+                     login_id = ret.getString(1);
                 }
-                retVal = true;
+                retVal = login_id;
             
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -205,7 +184,7 @@ public class DatabaseCreator {
             ret = null;
             stmt = null;
         }
-        
+        System.out.println("retVal: " + retVal);
         return retVal;
     }
     
@@ -223,7 +202,6 @@ public class DatabaseCreator {
             while(ret.next())
             {
                 count = ret.getInt(1);
-                System.out.println("COUNT: " + count);
                  
             }
             
@@ -239,8 +217,6 @@ public class DatabaseCreator {
 
                 }
                 newId = currentMax + 1;
-
-                System.out.println("ID: " + newId + ", Login: " + login + ", PW: " + password + ", Email: " + email);
                 //Insert new user into table with all their information
                 stmt.execute("INSERT INTO USERS (ID, LOGIN_ID, PASSWORD, EMAIL) VALUES ("+ newId+ ",'" + login +"','" + password +"','"+ email +"')");
                 retVal = true;
@@ -267,7 +243,7 @@ public class DatabaseCreator {
     
     private void createInventory()
     {
-                Statement stmt = null;
+        Statement stmt = null;
         try {
             
            stmt = conn.createStatement();
@@ -280,7 +256,6 @@ public class DatabaseCreator {
              +"PROD_COST DECIMAL(6,2),"
              +"PROD_INVENTORY INTEGER,"
              +"PROD_IMG_SRC VARCHAR(512))");
-            System.out.println("Table was created!");
             
             
             stmt.execute("INSERT INTO PRODUCTS VALUES (1,'Maple Leaves','1 Dozen Pure Maple Leave Candies', 6.99,200,'assets/img/new_candy.jpg')");
@@ -318,7 +293,7 @@ public class DatabaseCreator {
         }
     }
     
-        public List<Product> getProducts(String order)
+    public List<Product> getProducts(String order)
     {
         String orderBy = "PROD_NAME";
         if(order.equals("id"))
@@ -331,15 +306,6 @@ public class DatabaseCreator {
             stmt = conn.createStatement();
             
             ret = stmt.executeQuery("select * from products order by " + orderBy + " asc");
-            ResultSetMetaData rsmd = ret.getMetaData();
-            int numberCols = rsmd.getColumnCount();
-            for (int i=1; i<=numberCols; i++)
-            {
-                //print Column Names
-                System.out.print(rsmd.getColumnLabel(i)+"\t\t");  
-            }
-
-            System.out.println("\n-------------------------------------------------");
 
             while(ret.next())
             {
@@ -349,7 +315,6 @@ public class DatabaseCreator {
                 double cost = ret.getDouble(4);
                 int inventory = ret.getInt(5);
                 String imgSrc = ret.getString(6);
-                System.out.println(id + "\t\t" +name + "\t\t" + desc + "\t\t" + cost );
                 Product prod = new Product(id, name, desc, cost, inventory, imgSrc);
                 products.add(prod);
             }            
@@ -373,5 +338,121 @@ public class DatabaseCreator {
         
         return products;
         
+    }
+    
+    private void createOrders()
+    {
+        Statement stmt = null;
+        try {
+            
+           stmt = conn.createStatement();
+           
+           if(stmt != null){
+            stmt.executeUpdate("CREATE TABLE ORDERS ( "
+             +"ID INTEGER not null primary key,"
+             +"USER_ID INTEGER,"
+             +"ORDER_INFORMATION VARCHAR(4096),"
+             +"ORDER_COST DECIMAL(6,2),"
+             +"PROD_INVENTORY INTEGER,"
+             +"PROD_IMG_SRC VARCHAR(512))");
+            System.out.println("Table was created!");
+
+           }
+           
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        finally
+        {
+           // Release resources
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    public void updateInventory(int id, int amount)
+    {
+        Statement stmt = null;
+        ResultSet ret = null;
+        try {
+            
+           stmt = conn.createStatement();
+           
+           if(stmt != null)
+           {
+               int newVal;
+                int val = 0;
+                //Calculate latest ID value
+                ret = stmt.executeQuery("SELECT PROD_INVENTORY FROM PRODUCTS WHERE ID=" + id);
+                while(ret.next())
+                {
+                    val = ret.getInt(1);
+
+                }
+                if(val - amount < 0)
+                    newVal = 0;
+                else
+                    newVal = val - amount;
+               
+            stmt.execute("UPDATE PRODUCTS SET PROD_INVENTORY =" + newVal + " WHERE ID =" + id);
+           }
+           
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        finally
+        {
+           // Release resources
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    public int getInventory(int id)
+    {
+        Statement stmt = null;
+        ResultSet ret = null;
+        int inStock = -1;
+        try {
+            
+           stmt = conn.createStatement();
+           
+           if(stmt != null)
+           {
+                //Calculate latest ID value
+                ret = stmt.executeQuery("SELECT PROD_INVENTORY FROM PRODUCTS WHERE ID=" + id);
+                while(ret.next())
+                {
+                    inStock = ret.getInt(1);
+
+                }
+           }
+           
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        finally
+        {
+           // Release resources
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }  
+        
+        return inStock;
     }
 }

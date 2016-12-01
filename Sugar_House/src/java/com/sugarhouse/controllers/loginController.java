@@ -18,6 +18,9 @@ import javax.servlet.http.HttpSession;
 import com.sugarhouse.business.ShoppingCart;
 import com.sugarhouse.database.DatabaseCreator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Fenton
@@ -84,7 +87,10 @@ public class loginController extends HttpServlet {
 			}
 			if(errMsg.equals(""))
                         {
-                            System.out.println("Redirecting to Thank You page!");
+                            session = request.getSession();
+                            ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+                            updateInventory(cart, dc);
+                            cart.resetCart();
 				//Redirect user to the thank you page
 				url = "/thankyou.jsp";
                         }
@@ -133,10 +139,10 @@ public class loginController extends HttpServlet {
 			String login = request.getParameter("loginId");
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
-                        boolean isValidUser = dc.verifiyUser(login, password);
+                        String user = dc.verifiyUser(login, password);
 
 			//If no login issues occur, redirect user to the home page
-			if(isValidUser)
+			if(user != null)
                         {
                             if(login.equals("admin"))
                             {
@@ -146,6 +152,8 @@ public class loginController extends HttpServlet {
                             {
                                 session.setAttribute("isAdmin", "no");
                             }
+                            session.setAttribute("User", user);
+                            session.setAttribute("Login","true");
                             url = "/index.jsp";
                         }else
                         {
@@ -155,6 +163,13 @@ public class loginController extends HttpServlet {
                         }
 			//TODO: If the user is an admin, redirect to the Admin View (inventory)
 		}
+                if(action.equals("logout")){
+                    session.setAttribute("isAdmin", "no");
+                    session.setAttribute("Login", "false");
+                    session.setAttribute("User", null);
+                    errMsg = "Successfully logged out.";
+                    url = "/logIn.jsp";
+		}
                 if(action.equals("add") || action.equals("remove")){
 
 			//TODO: If user is not logged in, redirect to login page
@@ -163,10 +178,6 @@ public class loginController extends HttpServlet {
 			int productID = Integer.parseInt(request.getParameter("ID"));
 			double cost = Double.parseDouble(request.getParameter("cost"));
                         String name = request.getParameter("name");
-
-			System.out.println("Unit cost: " + cost);
-			System.out.println("quantity: " + quantityString);
-			System.out.println("product ID: " + productID);
 
 
 			
@@ -187,20 +198,47 @@ public class loginController extends HttpServlet {
 				quantity = 1;
 			}
 			if(action.equals("add")){
-				cart.addItem(quantity, productID, cost, name);
-				url = "/marketplace.jsp";
+                            int inStock = dc.getInventory(productID);
+                            if(inStock - quantity < 0)
+                            {
+                                errMsg = "Only " + inStock + " " + name +" product(s) in stock. Please enter a quantity of " + inStock +" or less.";
+                            }else
+                            {
+                              cart.addItem(quantity, productID, cost, name);  
+                            }
+                            url = "/marketplace.jsp";
 			}
 			if(action.equals("remove")){
 				cart.removeItem(quantity, productID, cost, name);
 				url = "/shoppingCart.jsp";
 			}
 			session.setAttribute("cart", cart);
+                        
 
 		}
+                session.setAttribute("ErrorMsg", errMsg);
                 System.out.println("This is the URL: " + url);
+                System.out.println("This is the ErrMsg: " + session.getAttribute("ErrorMsg"));
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
 		dispatcher.forward(request, response); 
 	}
+        
+        private void updateInventory( ShoppingCart cart, DatabaseCreator dc)
+        {
+            List<String> items = new ArrayList<String>();
+            items = cart.getItems();
+                                
+            for (int i = 0; i < items.size(); i++) {
+                String item = items.get(i);
+                String[] splitItem = item.split(",");
+                int itemQuantity = Integer.parseInt(splitItem[1]);
+                int itemID = Integer.parseInt(splitItem[2]);
+                
+                dc.updateInventory(itemID, itemQuantity);
+                
+                
+            }
+        }
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 	/**
