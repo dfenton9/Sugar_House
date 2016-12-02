@@ -1,3 +1,4 @@
+<%@page import="com.sugarhouse.business.Shopper"%>
 <%@page import="com.sugarhouse.database.DatabaseCreator" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -89,7 +90,7 @@
 				<div class="col-lg-10 col-lg-offset-3">
 					<h4>
                                             <% if(session.getAttribute("User") != null){%>
-                                            <%=session.getAttribute("User")%>
+                                            <%=((Shopper)session.getAttribute("User")).getName() %>
                                             <%}%>
                                             Welcome to
                                         </h4>

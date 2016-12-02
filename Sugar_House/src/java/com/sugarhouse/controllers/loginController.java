@@ -5,6 +5,7 @@
  */
 package com.sugarhouse.controllers;
 
+import com.sugarhouse.business.Shopper;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -58,7 +59,14 @@ public class loginController extends HttpServlet {
 		}
 		if(action.equals("checkout")){
 			//Redirect user to the checkout page
-			url = "/checkout.jsp";
+                        if(session.getAttribute("User") == null)
+                        {
+                            errMsg = "Please login or register before completing your order.";
+                            url = "/logIn.jsp";
+                        }else
+                        {
+                            url = "/checkout.jsp";
+                        }
 		}
 		if(action.equals("marketplace")){
 			//Redirect user to the marketplace
@@ -89,7 +97,11 @@ public class loginController extends HttpServlet {
                         {
                             session = request.getSession();
                             ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+                            //Modify the inventory to reflect the completion of this order
                             updateInventory(cart, dc);
+                            //Add this order to the Orders table
+                            dc.insertOrder(((Shopper)session.getAttribute("User")).getId(), cart.getTotalCost());
+                            dc.removeItems(((Shopper)session.getAttribute("User")).getId());
                             cart.resetCart();
 				//Redirect user to the thank you page
 				url = "/thankyou.jsp";
@@ -128,10 +140,12 @@ public class loginController extends HttpServlet {
                             return;
                         }
 			//If no registration issues occur, redirect user to login
-			if(!errMsg.equals(""))
+			if(errMsg.equals(""))
                         {
-                            
-                            url = "/logIn.jsp";
+                            Shopper user = dc.verifiyUser(login, password);
+                            session.setAttribute("User", user);
+                            session.setAttribute("Login","true");
+                            url = "/index.jsp";
                                 
                         }
 		}
@@ -139,7 +153,7 @@ public class loginController extends HttpServlet {
 			String login = request.getParameter("loginId");
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
-                        String user = dc.verifiyUser(login, password);
+                        Shopper user = dc.verifiyUser(login, password);
 
 			//If no login issues occur, redirect user to the home page
 			if(user != null)
@@ -152,6 +166,10 @@ public class loginController extends HttpServlet {
                             {
                                 session.setAttribute("isAdmin", "no");
                             }
+                            System.out.println("Getting Items for " + user.getId());
+                            
+                            dc.getAllItems();
+                            session.setAttribute("cart", dc.getItems(user.getId()));
                             session.setAttribute("User", user);
                             session.setAttribute("Login","true");
                             url = "/index.jsp";
@@ -164,9 +182,15 @@ public class loginController extends HttpServlet {
 			//TODO: If the user is an admin, redirect to the Admin View (inventory)
 		}
                 if(action.equals("logout")){
+                    ShoppingCart cart = (ShoppingCart)session.getAttribute("cart");
+                    int usr_id = ((Shopper)session.getAttribute("User")).getId();
+                    dc.removeItems(usr_id);
+                    dc.addItems(usr_id, cart);
+                    dc.getAllItems();
                     session.setAttribute("isAdmin", "no");
                     session.setAttribute("Login", "false");
                     session.setAttribute("User", null);
+                    session.setAttribute("cart", null);
                     errMsg = "Successfully logged out.";
                     url = "/logIn.jsp";
 		}

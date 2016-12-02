@@ -5,13 +5,18 @@
  */
 package com.sugarhouse.database;
 
+import com.sugarhouse.business.Order;
 import com.sugarhouse.business.Product;
+import com.sugarhouse.business.Shopper;
+import com.sugarhouse.business.ShoppingCart;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -77,6 +82,8 @@ public class DatabaseCreator {
         
         createUsers();
         createInventory();
+        createOrders();
+        createItems();
     }
     
     private void createUsers()
@@ -149,24 +156,58 @@ public class DatabaseCreator {
         
     }
     
-    public String verifiyUser(String login, String password)
+    public String getUsersLogin(int id)
     {
-        String retVal = null;
+        Statement stmt = null;
+        ResultSet ret = null;
+        String usr_login = null;
+        try {
+            stmt = conn.createStatement();
+            
+            ret = stmt.executeQuery("select LOGIN_ID from users where ID= " + id);
+
+            while(ret.next())
+            {
+                 usr_login = ret.getString(1);
+            }            
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally
+        {
+            try {
+                if(ret != null)
+                    ret.close();
+                if(stmt != null)
+                    stmt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            
+            ret = null;
+            stmt = null;
+        }
+        return usr_login;
+    }
+    
+    public Shopper verifiyUser(String login, String password)
+    {
+        Shopper retVal = null;
         
-                Statement stmt = null;
+        Statement stmt = null;
         ResultSet ret = null;
         try {
             stmt = conn.createStatement();
             
             System.out.println("Login: " + login + ", PW: " + password);
-            ret = stmt.executeQuery("select LOGIN_ID from users where (login_id ='" + login +"' and password ='" + password +"')");
+            ret = stmt.executeQuery("select LOGIN_ID, ID from users where (login_id ='" + login +"' and password ='" + password +"')");
 
-                String login_id = null;
+                Shopper usr = null;
                 while(ret.next())
                 {
-                     login_id = ret.getString(1);
+                     usr = new Shopper(ret.getString(1),ret.getInt(2));
                 }
-                retVal = login_id;
+                retVal = usr;
             
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -351,11 +392,9 @@ public class DatabaseCreator {
             stmt.executeUpdate("CREATE TABLE ORDERS ( "
              +"ID INTEGER not null primary key,"
              +"USER_ID INTEGER,"
-             +"ORDER_INFORMATION VARCHAR(4096),"
-             +"ORDER_COST DECIMAL(6,2),"
-             +"PROD_INVENTORY INTEGER,"
-             +"PROD_IMG_SRC VARCHAR(512))");
-            System.out.println("Table was created!");
+             +"ORDER_TOTAL_COST DECIMAL(6,2),"
+             +"ORDER_CREATED_DATE DATE,"
+             +"ORDER_STATUS VARCHAR(64))");
 
            }
            
@@ -373,6 +412,97 @@ public class DatabaseCreator {
                 }
             }
         }
+    }
+    
+    public void insertOrder(int usr_id, double total_cost)
+    {
+        Statement stmt = null;
+        ResultSet ret = null;
+        try {
+            stmt = conn.createStatement();
+            
+            int newId;
+            int currentMax = 0;
+            //Calculate latest ID value
+            ret = stmt.executeQuery("SELECT ID FROM ORDERS WHERE id=(SELECT MAX(id) FROM ORDERS)");
+            while(ret.next())
+            {
+                currentMax = ret.getInt(1);
+
+            }
+            newId = currentMax + 1;
+            
+            //Generate current date
+            //DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            java.util.Date date_now = new java.util.Date();
+            java.sql.Date sqlDate = new java.sql.Date(date_now.getTime());
+            String status = "Confirmed";
+            //Insert new user into table with all their information
+            stmt.execute("INSERT INTO ORDERS (ID, USER_ID, ORDER_TOTAL_COST, ORDER_CREATED_DATE, ORDER_STATUS ) VALUES ("+ newId+ "," + usr_id +"," + total_cost +",'"+ sqlDate + "','" + status +"')");
+            System.out.println("Successfully inserted new order: " + newId);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally
+        {
+            try {
+                if(ret != null)
+                    ret.close();
+                if(stmt != null)
+                    stmt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            
+            ret = null;
+            stmt = null;
+        }
+    }
+    
+    public List<Order> getOrders(String sort)
+    {
+        String orderBy = "ID";
+        if(sort.equals("date"))
+            orderBy = "ORDER_CREATED_DATE";
+        
+        Statement stmt = null;
+        ResultSet ret = null;
+        List<Order> orders = new ArrayList<Order>();
+        try {
+            stmt = conn.createStatement();
+            
+            ret = stmt.executeQuery("select * from orders order by " + orderBy + " asc");
+
+            while(ret.next())
+            {
+                int id = ret.getInt(1);
+                int uid = ret.getInt(2);
+                double cost = ret.getDouble(3);
+                java.sql.Date date = ret.getDate(4);
+                String status = ret.getString(5);
+                
+                Order order = new Order(id, uid, cost, date, status);
+                orders.add(order);
+            }            
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally
+        {
+            try {
+                if(ret != null)
+                    ret.close();
+                if(stmt != null)
+                    stmt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            
+            ret = null;
+            stmt = null;
+        }
+        
+        return orders;
+        
     }
     
     public void updateInventory(int id, int amount)
@@ -455,4 +585,188 @@ public class DatabaseCreator {
         
         return inStock;
     }
+    
+    private void createItems()
+    {
+        Statement stmt = null;
+        try {
+            
+           stmt = conn.createStatement();
+           
+           if(stmt != null){
+            stmt.executeUpdate("CREATE TABLE ITEMS ( "
+             +"ID INTEGER not null primary key,"
+             +"USER_ID INTEGER,"
+             +"NAME VARCHAR(512),"
+             +"PROD_ID INTEGER,"
+             +"QUANTITY INTEGER,"
+             +"COST DECIMAL(6,2))");
+
+           }
+           
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        finally
+        {
+           // Release resources
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }        
+    }
+    
+    public void getAllItems()
+    {
+        Statement stmt = null;
+        ResultSet ret = null;
+        int inStock = -1;
+        try {
+            
+           stmt = conn.createStatement();
+           
+           if(stmt != null)
+           {
+                //Calculate latest ID value
+                ret = stmt.executeQuery("SELECT * FROM ITEMS");
+                while(ret.next())
+                {
+                    System.out.println("(" + ret.getInt(1) +", "+ ret.getInt(2) +", "+ ret.getString(3)+", "+ ret.getInt(4)+", "+ ret.getInt(5)+", "+ ret.getDouble(6) +")");
+                }
+           }
+           
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        finally
+        {
+           // Release resources
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }  
+        
+    }
+    
+    public ShoppingCart getItems(int usr_id)
+    {
+        ShoppingCart sc = new ShoppingCart();
+        Statement stmt = null;
+        ResultSet ret = null;
+        int inStock = -1;
+        try {
+            
+           stmt = conn.createStatement();
+           
+           if(stmt != null)
+           {
+                //Calculate latest ID value
+                ret = stmt.executeQuery("SELECT NAME, PROD_ID, QUANTITY, COST FROM ITEMS WHERE USER_ID=" + usr_id);
+                while(ret.next())
+                {
+                    sc.addItem(ret.getInt(3), ret.getInt(2), ret.getDouble(4), ret.getString(1));
+                }
+           }
+           
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        finally
+        {
+           // Release resources
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }          
+        return sc;
+    }
+    
+    public void removeItems(int usr_id)
+    {
+        Statement stmt = null;
+        try {
+            
+           stmt = conn.createStatement();
+           
+           if(stmt != null)
+           {
+                stmt.execute("DELETE FROM ITEMS WHERE USER_ID =" + usr_id);
+           }
+           
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        finally
+        {
+           // Release resources
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }         
+    }
+    
+    public void addItems(int usr_id, ShoppingCart cart)
+    {
+        Statement stmt = null;
+        ResultSet ret = null;
+        try {
+            stmt = conn.createStatement();
+                for (String items : cart.getItems()) {
+                int newId;
+                int currentMax = 0;
+                //Calculate latest ID value
+                ret = stmt.executeQuery("SELECT ID FROM ITEMS WHERE id=(SELECT MAX(id) FROM ITEMS)");
+                while(ret.next())
+                {
+                    currentMax = ret.getInt(1);
+
+                }
+                newId = currentMax + 1;
+            
+                String[] splitItem = items.split(",");
+                String name = splitItem[0];
+                String quantity = splitItem[1];
+                String productID = splitItem[2];
+                Double singleItemCost = Double.parseDouble(splitItem[3]);
+            
+            
+                stmt.execute("INSERT INTO ITEMS (ID, USER_ID, NAME, PROD_ID, QUANTITY, COST ) VALUES ("+ newId+ "," + usr_id +",'" + name +"',"+ productID + "," + quantity + "," + singleItemCost  +")");
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally
+        {
+            try {
+                if(ret != null)
+                    ret.close();
+                if(stmt != null)
+                    stmt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            
+            ret = null;
+            stmt = null;
+        }
+    }
+    
+    
+   
 }

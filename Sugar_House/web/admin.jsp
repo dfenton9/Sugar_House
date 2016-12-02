@@ -4,6 +4,7 @@
     Author     : Snyder
 --%>
 
+<%@page import="com.sugarhouse.business.Order"%>
 <%@page import="com.sugarhouse.business.Product"%>
 <%@page import="com.sugarhouse.database.DatabaseCreator"%>
 <!DOCTYPE html>
@@ -91,7 +92,7 @@ button {
 
 			<h2 align="left">Administrator View</h2>
 
-			<!--TODO: Display information from the database in a table for the admin to view (placeholders below)-->
+
 			<h3 align="left">Order History</h3>
 			<table>
 				<tr>
@@ -100,7 +101,22 @@ button {
 					<th>Order Status</th>
 					<th>Order Cost</th>
 				</tr>
+                            <% for(Order order : dc.getOrders("id")) { %>
+                                <tr>
+                                    <td><%= dc.getUsersLogin(order.getUID()) %></td>
+                                    <td><%= order.getOrderDate() %></td>
+                                    <td><%= order.getStatus() %></td>
+                                    <td><%= order.getTotalCost() %></td>
+                                </tr>
+                            <%}%>
 			</table>
+                        <br>
+                        <form action="PrintToExcel" method="post">
+                            <div class="button-section">
+                                <input type="submit" value="Print Orders to Excel" >
+                                <input type="hidden" name="ReportType" value="Orders">
+                            </div>
+                        </form>
 			<h3 align="left">Product Availability</h3>
 			<table>
 				<tr>
@@ -118,6 +134,13 @@ button {
                                 </tr>
                             <%}%>
 			</table>
+                        <br>
+                        <form action="PrintToExcel" method="post">
+                            <div class="button-section">
+                                <input type="submit" value="Print Inventory to Excel" >
+                                <input type="hidden" name="ReportType" value="Inventory">
+                            </div>
+                        </form>
 
 		</div>
 		<!--/row -->

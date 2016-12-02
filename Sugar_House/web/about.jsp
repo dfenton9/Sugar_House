@@ -54,8 +54,15 @@ h1 {
 		<div id="nav" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-left">
             <li class="active"><a href="index.jsp">Home</a></li>
-            <li><a href="logIn.jsp">Login</a></li>
+            <% if(session.getAttribute("Login").equals("true")){ %>
+                <li><a href="<%=request.getContextPath()%>/loginController?action=logout">Logout</a></li>
+            <%}else{%>
+                <li><a href="logIn.jsp">Login</a></li>
+            <%}%>
             <li><a href="shoppingCart.jsp">My Cart</a></li>
+            <% if(session.getAttribute("isAdmin").equals("yes")){ %>
+                <li><a href="admin.jsp">Admin</a></li>
+            <%}%>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

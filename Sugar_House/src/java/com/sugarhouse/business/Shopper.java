@@ -14,13 +14,25 @@ import java.io.Serializable;
 public class Shopper implements Serializable{
     
     private String name;
-    private ShoppingCart myCart;
+    private int id;
     
-    
-    public Shopper()
+    public Shopper(String name, int id)
     {
-        
+        this.name = name;
+        this.id = id;
     }
     
+    /**
+     * Getters
+     */
+    public String getName()
+    {
+        return name;
+    }
+    
+    public int getId()
+    {
+        return id;
+    }
     
 }
