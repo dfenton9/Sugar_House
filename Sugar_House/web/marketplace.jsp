@@ -29,9 +29,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-<script type="text/javascript" src="inputValidation.js">
-	
-</script>
+
 
 <style>
 table, td, th {    
@@ -51,6 +49,9 @@ button {
   width:100px; 
 } 
 </style>
+<script type="text/javascript" src="inputValidation.js">
+	
+</script>
 </head>
 
 
@@ -104,7 +105,7 @@ button {
 			</div><!--/row -->
 		</div><!-- /container -->
 	</div><!--/workwrap -->
-
+        
 	<section id="works"></section>
 	<div class="container">
 		<div class="row centered mt mb">
@@ -126,15 +127,17 @@ button {
                                                         <p><%= prod.getName() %></p>
 							<p>Cost: $<%=prod.getCost()%></p>
 							<p>Description: <%=prod.getDescription() %> </p>
-                                                        <% if(prod.getInventory() < 10) { %>
+                                                        <% if(prod.getInventory() < 10 && prod.getInventory() > 0 ) { %>
                                                         <p style="color:green;">Only <%= prod.getInventory() %> left in stock!</p>
+                                                        <% }else if(prod.getInventory() < 1){ %>
+                                                        <p style="color:red;">This item is out of stock!</p>
                                                         <% } %>
 						</td>
-						<td> <form action="loginController" method="get">
-						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9.5">
+                                                <td> <form name="prod<%=prod.getId()%>" action="loginController" method="get" onsubmit="return quantityValidation(this)">
+						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9">
 						<p></p>
 						<div class="button-section">
-                                                    <input type="submit" value="Add to Cart" <%if(!prod.isAvailable()){%> disabled<%}%>>
+                                                    <input type="submit" value="Add to Cart" <%if(!prod.isAvailable()){%> disabled<%}%> >
 						<input type="hidden" name="action" value="add">
                                                 <input type="hidden" name="name" value="<%=prod.getName()%>">
 						<input type="hidden" name="ID" value="<%=prod.getId()%>">

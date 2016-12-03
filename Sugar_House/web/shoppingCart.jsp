@@ -4,6 +4,7 @@
     Author     : Fenton
 --%>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,6 +84,7 @@ button {
 			<%@ page import="com.sugarhouse.business.ShoppingCart"%>
 			<%@ page import="java.util.*"%>
 			<%@ page import="javax.servlet.*"%>
+                        <%@ page import="java.text.NumberFormat"%>
 
 			<%
 				session = request.getSession();
@@ -111,6 +113,7 @@ button {
 
 			<%
 				} else {
+                                NumberFormat formatter = NumberFormat.getCurrencyInstance();
 			%>
 
 			<table>
@@ -136,7 +139,7 @@ button {
                                         <td><%=itemName %></td>
 					<td><%=itemID%></td>
 					<td><%=itemQuantity%></td>
-					<td><%=multiItemCost%></td>
+                                        <td><%=formatter.format(multiItemCost)%></td>
 					<td>
 						<form action="loginController" method="post">
 							<div class="button-section">
@@ -157,7 +160,7 @@ button {
                                         <td></td>
 					<td>TOTAL COST</td>
 					<td></td>
-					<td><%=totalCost%></td>
+					<td><%=formatter.format(totalCost)%></td>
 					<td></td>
 				</tr>
 			</table>

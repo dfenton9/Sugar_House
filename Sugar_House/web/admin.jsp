@@ -4,6 +4,7 @@
     Author     : Snyder
 --%>
 
+<%@page import="java.text.NumberFormat"%>
 <%@page import="com.sugarhouse.business.Order"%>
 <%@page import="com.sugarhouse.business.Product"%>
 <%@page import="com.sugarhouse.database.DatabaseCreator"%>
@@ -101,12 +102,13 @@ button {
 					<th>Order Status</th>
 					<th>Order Cost</th>
 				</tr>
-                            <% for(Order order : dc.getOrders("id")) { %>
+                            <% NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                                for(Order order : dc.getOrders("id")) { %>
                                 <tr>
                                     <td><%= dc.getUsersLogin(order.getUID()) %></td>
                                     <td><%= order.getOrderDate() %></td>
                                     <td><%= order.getStatus() %></td>
-                                    <td><%= order.getTotalCost() %></td>
+                                    <td><%= formatter.format(order.getTotalCost()) %></td>
                                 </tr>
                             <%}%>
 			</table>

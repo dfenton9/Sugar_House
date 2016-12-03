@@ -10,6 +10,7 @@ import com.sugarhouse.business.Product;
 import com.sugarhouse.business.Shopper;
 import com.sugarhouse.business.ShoppingCart;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -20,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -70,6 +73,27 @@ public class DatabaseCreator {
 
             System.out.println("Connected to and created database " + dbName);
             
+            DatabaseMetaData dbm;
+
+            dbm = conn.getMetaData();
+            ResultSet tables;
+            
+            tables = dbm.getTables(null, null, "USERS",null);  
+            if(!tables.next())
+                createUsers();
+            
+            tables = dbm.getTables(null, null, "PRODUCTS",null);  
+            if(!tables.next())
+                createInventory();
+            
+            tables = dbm.getTables(null, null, "ORDERS",null);  
+            if(!tables.next())
+                createOrders();
+            
+            tables = dbm.getTables(null, null, "ITEMS",null);  
+            if(!tables.next())
+                createItems();    
+            
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
@@ -79,11 +103,7 @@ public class DatabaseCreator {
         } catch (IllegalAccessException ex) {
             ex.printStackTrace();
         }
-        
-        createUsers();
-        createInventory();
-        createOrders();
-        createItems();
+
     }
     
     private void createUsers()
@@ -289,12 +309,14 @@ public class DatabaseCreator {
             
            stmt = conn.createStatement();
            
+           
+           
            if(stmt != null){
             stmt.executeUpdate("CREATE TABLE PRODUCTS ( "
              +"ID INTEGER not null primary key,"
              +"PROD_NAME VARCHAR(48),"
              +"PROD_DESCRIPTION VARCHAR(512),"
-             +"PROD_COST DECIMAL(6,2),"
+             +"PROD_COST DECIMAL(12,2),"
              +"PROD_INVENTORY INTEGER,"
              +"PROD_IMG_SRC VARCHAR(512))");
             

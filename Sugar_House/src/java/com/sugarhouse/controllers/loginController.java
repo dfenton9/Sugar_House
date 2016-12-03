@@ -166,7 +166,6 @@ public class loginController extends HttpServlet {
                             {
                                 session.setAttribute("isAdmin", "no");
                             }
-                            System.out.println("Getting Items for " + user.getId());
                             
                             dc.getAllItems();
                             session.setAttribute("cart", dc.getItems(user.getId()));
@@ -177,7 +176,6 @@ public class loginController extends HttpServlet {
                         {
                             errMsg = "Invlaid Login or Password.";
                             url = "/logIn.jsp";
-                            System.out.println("Error verifying user!");
                         }
 			//TODO: If the user is an admin, redirect to the Admin View (inventory)
 		}
@@ -223,7 +221,7 @@ public class loginController extends HttpServlet {
 			}
 			if(action.equals("add")){
                             int inStock = dc.getInventory(productID);
-                            if(inStock - quantity < 0)
+                            if(inStock - quantity < 1)
                             {
                                 errMsg = "Only " + inStock + " " + name +" product(s) in stock. Please enter a quantity of " + inStock +" or less.";
                             }else

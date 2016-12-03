@@ -17,3 +17,16 @@ function inputValidation(){
         return true;
     
 }
+
+function quantityValidation(ele)
+{
+    var data = ele.quantity.value;
+    if(parseInt(data) && (data%1)===0) {
+          return true;
+    }else
+    {
+          alert("Must enter whole number value.");
+          return false;
+    }
+
+}
