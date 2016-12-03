@@ -241,8 +241,6 @@ public class loginController extends HttpServlet {
 
 		}
                 session.setAttribute("ErrorMsg", errMsg);
-                System.out.println("This is the URL: " + url);
-                System.out.println("This is the ErrMsg: " + session.getAttribute("ErrorMsg"));
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
 		dispatcher.forward(request, response); 
 	}
