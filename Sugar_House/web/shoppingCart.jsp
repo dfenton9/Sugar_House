@@ -141,7 +141,7 @@ button {
 					<td><%=itemQuantity%></td>
                                         <td><%=formatter.format(multiItemCost)%></td>
 					<td>
-						<form action="loginController" method="post">
+						<form action="shoppingCartController" method="post">
 							<div class="button-section">
 								<input type="submit" onclick="alert('Item removed from cart')" value="Remove from Cart"> 
                                                                 <input type="hidden" name="action" value="remove"> 
@@ -165,13 +165,12 @@ button {
 				</tr>
 			</table>
 
-			<form action="loginController" method="POST" style="width: 400px">
+			<form action="/Sugar_House/checkout.jsp" method="POST" style="width: 400px">
 				<p></p>
 				<p></p>
 				<p></p>
 				<div class="button-section">
 					<input type="submit" value="Checkout" style="width: 200px">
-					<input type="hidden" name="action" value="checkout">
 				</div>
 				<p></p>
 			</form>

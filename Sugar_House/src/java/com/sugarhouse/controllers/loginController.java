@@ -72,41 +72,6 @@ public class loginController extends HttpServlet {
 			//Redirect user to the marketplace
 			url = "/marketplace.jsp";
 		}
-		if(action.equals("confirm")){
-                        errMsg = "";
-			String creditType = request.getParameter("cardType");
-			String creditNumber = request.getParameter("creditNumber");
-			String expirationDate = request.getParameter("date");
-			String regex = "\\d+";
-			System.out.println("Credit type is: " + creditType);
-			System.out.println("Credit number is: " + creditNumber);
-			System.out.println("Exp date is: " + expirationDate);
-
-			//Check if all fields were entered
-			if(creditType == null || creditNumber == null || expirationDate == null){
-				errMsg += "One or more fields was left empty. Please fill out all fields to continue.";
-				return;
-			}
-			//check if credit number is numeric
-			if(!creditNumber.matches(regex)){
-				errMsg += "Credit number provided is invalid.";
-				System.out.println("Invalid credit number");
-				return;
-			}
-			if(errMsg.equals(""))
-                        {
-                            session = request.getSession();
-                            ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-                            //Modify the inventory to reflect the completion of this order
-                            updateInventory(cart, dc);
-                            //Add this order to the Orders table
-                            dc.insertOrder(((Shopper)session.getAttribute("User")).getId(), cart.getTotalCost());
-                            dc.removeItems(((Shopper)session.getAttribute("User")).getId());
-                            cart.resetCart();
-				//Redirect user to the thank you page
-				url = "/thankyou.jsp";
-                        }
-		}
 		if(action.equals("register")){
 			//Get registration parameters
 			String login = request.getParameter("loginId");
@@ -168,7 +133,16 @@ public class loginController extends HttpServlet {
                             }
                             
                             dc.getAllItems();
-                            session.setAttribute("cart", dc.getItems(user.getId()));
+                            
+                            ShoppingCart usrCart = dc.getItems(user.getId());
+                            
+                            if(session.getAttribute("cart") != null)
+                            {
+                               System.out.println("Adding items to cart that were there prior to login");
+                               usrCart.appendItems(((ShoppingCart) session.getAttribute("cart")).getItems());
+                            }
+                            
+                            session.setAttribute("cart", usrCart);
                             session.setAttribute("User", user);
                             session.setAttribute("Login","true");
                             url = "/index.jsp";
@@ -192,73 +166,11 @@ public class loginController extends HttpServlet {
                     errMsg = "Successfully logged out.";
                     url = "/logIn.jsp";
 		}
-                if(action.equals("add") || action.equals("remove")){
-
-			//TODO: If user is not logged in, redirect to login page
-
-			String quantityString = request.getParameter("quantity");
-			int productID = Integer.parseInt(request.getParameter("ID"));
-			double cost = Double.parseDouble(request.getParameter("cost"));
-                        String name = request.getParameter("name");
-
-
-			
-			ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-			if (cart == null) {
-				cart = new ShoppingCart();
-			}
-
-			//if the user enters a negative or invalid quantity,
-			//the quantity is automatically reset to 1.
-			int quantity;
-			try {
-				quantity = Integer.parseInt(quantityString);
-				if (quantity < 0) {
-					quantity = 1;
-				}
-			} catch (NumberFormatException nfe) {
-				quantity = 1;
-			}
-			if(action.equals("add")){
-                            int inStock = dc.getInventory(productID);
-                            if(inStock - quantity < 1)
-                            {
-                                errMsg = "Only " + inStock + " " + name +" product(s) in stock. Please enter a quantity of " + inStock +" or less.";
-                            }else
-                            {
-                              cart.addItem(quantity, productID, cost, name);  
-                            }
-                            url = "/marketplace.jsp";
-			}
-			if(action.equals("remove")){
-				cart.removeItem(quantity, productID, cost, name);
-				url = "/shoppingCart.jsp";
-			}
-			session.setAttribute("cart", cart);
-                        
-
-		}
+                
                 session.setAttribute("ErrorMsg", errMsg);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
 		dispatcher.forward(request, response); 
 	}
-        
-        private void updateInventory( ShoppingCart cart, DatabaseCreator dc)
-        {
-            List<String> items = new ArrayList<String>();
-            items = cart.getItems();
-                                
-            for (int i = 0; i < items.size(); i++) {
-                String item = items.get(i);
-                String[] splitItem = item.split(",");
-                int itemQuantity = Integer.parseInt(splitItem[1]);
-                int itemID = Integer.parseInt(splitItem[2]);
-                
-                dc.updateInventory(itemID, itemQuantity);
-                
-                
-            }
-        }
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 	/**

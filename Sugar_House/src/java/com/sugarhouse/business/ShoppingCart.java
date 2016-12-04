@@ -17,28 +17,39 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class ShoppingCart implements Serializable {
 
-	private ArrayList<String> items;
-	private double totalCost;
-	//private int quantity;
-	//private int productID;
+    private ArrayList<String> items;
+    private double totalCost;
+    //private int quantity;
+    //private int productID;
 
-	public ShoppingCart() {
-		items = new ArrayList<String>();
-		totalCost = 0;
-	}
+    public ShoppingCart() {
+            items = new ArrayList<String>();
+            totalCost = 0;
+    }
 
-	public void addItem(int quantity, int productID, double unitCost, String name) {
-		String order = name + "," +quantity + "," + productID + "," + unitCost;
-		items.add(order);
-		totalCost = totalCost + (quantity * unitCost);
-	}
+    public void addItem(int quantity, int productID, double unitCost, String name) {
+            String order = name + "," +quantity + "," + productID + "," + unitCost;
+            items.add(order);
+            totalCost = totalCost + (quantity * unitCost);
+    }
 
-	public void removeItem(int quantity, int productID, double unitCost, String name) {
-		String order = name + "," + quantity + "," + productID + "," + unitCost;
-		boolean wasRemoved = items.remove(order);
-                System.out.println("Was (" + order + ") Removed? " + wasRemoved);
-		totalCost = totalCost - (quantity * unitCost);
-	}
+    public void removeItem(int quantity, int productID, double unitCost, String name) {
+            String order = name + "," + quantity + "," + productID + "," + unitCost;
+            boolean wasRemoved = items.remove(order);
+            System.out.println("Was (" + order + ") Removed? " + wasRemoved);
+            totalCost = totalCost - (quantity * unitCost);
+    }
+    
+    public void appendItems(ArrayList<String> newItems)
+    {
+        for(String itemInfo : newItems)
+        {
+            if(!items.contains(itemInfo))
+            {
+                items.add(itemInfo);
+            }
+        }
+    }
     public ArrayList<String> getItems() {
         return items;
     }

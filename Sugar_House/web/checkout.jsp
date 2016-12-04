@@ -95,8 +95,10 @@ button {
 				ArrayList<String> items = cart.getItems();
 				Double totalCost = cart.getTotalCost();
 			%>
-
-			<form action="loginController" method="post">
+                        <% if(session.getAttribute("ErrorMsg") != null && !session.getAttribute("ErrorMsg").equals("")){%>
+                            <div style="color:red;"><%=session.getAttribute("ErrorMsg")%></div>
+                        <%} session.setAttribute("ErrorMsg","");%>
+			<form action="creditCardController" method="post">
 				<div class="section"></div>
 				<div class="inner-wrap" align="left">
 					<!-- Main text for the confirmation page -->

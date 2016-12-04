@@ -25,6 +25,14 @@
         <servlet-name>PrintToExcel</servlet-name>
         <servlet-class>com.sugarhouse.business.PrintToExcel</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>creditCardController</servlet-name>
+        <servlet-class>com.sugarhouse.controllers.creditCardController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>shoppingCartController</servlet-name>
+        <servlet-class>com.sugarhouse.controllers.shoppingCartController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>action</servlet-name>
         <url-pattern>*.do</url-pattern>
@@ -36,6 +44,14 @@
     <servlet-mapping>
         <servlet-name>PrintToExcel</servlet-name>
         <url-pattern>/PrintToExcel</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>creditCardController</servlet-name>
+        <url-pattern>/creditCardController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>shoppingCartController</servlet-name>
+        <url-pattern>/shoppingCartController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -67,16 +83,15 @@
             <taglib-location>/WEB-INF/struts-tiles.tld</taglib-location>
         </taglib>
     </jsp-config>
-    
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>SSL</web-resource-name>
-            <url-pattern>/shoppingCart.jsp</url-pattern>
+            <url-pattern>/checkout.jsp</url-pattern>
             <http-method>GET</http-method>
             <http-method>POST</http-method>
         </web-resource-collection>
         <user-data-constraint>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-        </user-data-constraint> 
+        </user-data-constraint>
     </security-constraint>
 </web-app>

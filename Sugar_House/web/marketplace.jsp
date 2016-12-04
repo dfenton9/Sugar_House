@@ -133,7 +133,7 @@ button {
                                                         <p style="color:red;">This item is out of stock!</p>
                                                         <% } %>
 						</td>
-                                                <td> <form name="prod<%=prod.getId()%>" action="loginController" method="get" onsubmit="return quantityValidation(this)">
+                                                <td> <form name="prod<%=prod.getId()%>" action="shoppingCartController" method="get" onsubmit="return quantityValidation(this)">
 						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9">
 						<p></p>
 						<div class="button-section">
