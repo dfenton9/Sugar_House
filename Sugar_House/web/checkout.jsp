@@ -53,13 +53,21 @@ button {
 
 .ui-datepicker-calendar {
 	display: none;
-}
-â€‹
+}€‹
 </style>
 </head>
 
 <body>
-
+    <% 
+        //Only allow access to page if user is logged in and has the right privliages
+        if(session.getAttribute("User") == null)
+        {
+            String redirectURL = "/Sugar_House/index.jsp";
+            response.sendRedirect(redirectURL);
+        }
+        else
+        {
+      %>
 	<!-- Static navbar -->
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="container">
@@ -134,5 +142,6 @@ button {
 			</form>
 		</div>
 	</div>
+    <%}%>
 </body>
 </html>

@@ -4,6 +4,7 @@
     Author     : Snyder
 --%>
 
+<%@page import="com.sugarhouse.business.Shopper"%>
 <%@page import="java.text.NumberFormat"%>
 <%@page import="com.sugarhouse.business.Order"%>
 <%@page import="com.sugarhouse.business.Product"%>
@@ -58,12 +59,19 @@ button {
 
 <body>
     <% 
-          if(session.getAttribute("databaseConnection") == null)
-          {
-             session.setAttribute("databaseConnection", new DatabaseCreator());
-          }
-          
-          DatabaseCreator dc = (DatabaseCreator)session.getAttribute("databaseConnection");
+        //Only allow access to page if user is logged in and has the right privliages
+        if(session.getAttribute("User") == null || !((Shopper)session.getAttribute("User")).getName().equals("admin"))
+        {
+            String redirectURL = "/Sugar_House//index.jsp";
+            response.sendRedirect(redirectURL);
+        }else
+        {
+            if(session.getAttribute("databaseConnection") == null)
+            {
+               session.setAttribute("databaseConnection", new DatabaseCreator());
+            }
+
+            DatabaseCreator dc = (DatabaseCreator)session.getAttribute("databaseConnection");
       %>
 
 	<!-- Static navbar -->
@@ -79,9 +87,10 @@ button {
 			</div>
 			<div id="nav" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-left">
-					<li><a href="index.jsp">Home</a></li>
-					<!--             <li class="active"><a href="logIn.jsp">Login</a></li> -->
-					<!--             <li><a href="shoppingCart.jsp">My Cart</a></li> -->
+                                    <li><a href="index.jsp">Home</a></li>
+                                    <li class="active"><a href="admin.jsp">Admin</a></li>
+                                    <li><a href="manageInventory.jsp">Manage Inventory</a></li>
+                                    <li><a href="databaseView.jsp">Database</a></li>
 				</ul>
 			</div>
 			<!--/.nav-collapse -->
@@ -156,5 +165,6 @@ button {
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="assets/js/bootstrap.min.js"></script>
+<%}%>
 </body>
 </html>

@@ -78,7 +78,7 @@ button {
 			</div>
 			<div id="nav" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-left">
-					<li class="active"><a href="index.jsp">Home</a></li>
+					<li><a href="index.jsp">Home</a></li>
                                         <% if(session.getAttribute("Login").equals("true")){ %>
                                             <li><a href="<%=request.getContextPath()%>/loginController?action=logout">Logout</a></li>
                                         <%}else{%>

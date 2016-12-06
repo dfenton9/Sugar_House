@@ -570,6 +570,73 @@ public class DatabaseCreator {
         }
     }
     
+    public void updateInventory(int id, String name, double cost, int units, String description)
+    {
+        Statement stmt = null;
+        ResultSet ret = null;
+        try {
+            
+           stmt = conn.createStatement();
+           
+           if(stmt != null)
+           {
+               
+            stmt.execute("UPDATE PRODUCTS SET PROD_NAME ='" + name + "', PROD_DESCRIPTION ='" + description + "', PROD_COST = " + cost + ", PROD_INVENTORY =" + units + " WHERE ID =" + id);
+           }
+           
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        finally
+        {
+           // Release resources
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    public void insertInventory(String name, double cost, int units, String description)
+    {
+        Statement stmt = null;
+        ResultSet ret = null;
+        try {
+            stmt = conn.createStatement();
+            
+            int newId;
+            int currentMax = 0;
+            //Calculate latest ID value
+            ret = stmt.executeQuery("SELECT ID FROM PRODUCTS WHERE id=(SELECT MAX(id) FROM PRODUCTS)");
+            while(ret.next())
+            {
+                currentMax = ret.getInt(1);
+
+            }
+            newId = currentMax + 1;
+            //Insert new user into table with all their information
+            stmt.execute("INSERT INTO PRODUCTS (ID, PROD_NAME, PROD_DESCRIPTION, PROD_COST, PROD_INVENTORY, PROD_IMG_SRC ) VALUES ("+ newId+ ",'" + name +"','" + description +"',"+ cost + "," + units +",'assets/img/leaf.jpg')");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally
+        {
+            try {
+                if(ret != null)
+                    ret.close();
+                if(stmt != null)
+                    stmt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            
+            ret = null;
+            stmt = null;
+        }
+    }    
+    
     public int getInventory(int id)
     {
         Statement stmt = null;

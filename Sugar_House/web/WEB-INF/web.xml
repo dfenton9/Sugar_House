@@ -33,6 +33,10 @@
         <servlet-name>shoppingCartController</servlet-name>
         <servlet-class>com.sugarhouse.controllers.shoppingCartController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>inventoryController</servlet-name>
+        <servlet-class>com.sugarhouse.controllers.inventoryController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>action</servlet-name>
         <url-pattern>*.do</url-pattern>
@@ -52,6 +56,10 @@
     <servlet-mapping>
         <servlet-name>shoppingCartController</servlet-name>
         <url-pattern>/shoppingCartController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>inventoryController</servlet-name>
+        <url-pattern>/inventoryController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

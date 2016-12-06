@@ -35,8 +35,17 @@
 </head>
 
 <body>
+    <% 
+        //Only allow access to page if user is logged in and has the right privliages
+        if(session.getAttribute("User") == null)
+        {
+            String redirectURL = "/Sugar_House//index.jsp";
+            response.sendRedirect(redirectURL);
+        }else
+        {
 
-	<!-- Static navbar -->
+    %>
+        <!-- Static navbar -->
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="container">
 			<div class="navbar-header">
@@ -73,5 +82,6 @@
 			</div>
 		</div>
 	</div>
+    <%}%>
 </body>
 </html>
