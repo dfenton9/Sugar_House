@@ -7,7 +7,6 @@ package com.sugarhouse.controllers;
 
 import com.sugarhouse.business.Shopper;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,9 +17,6 @@ import javax.servlet.http.HttpSession;
 
 import com.sugarhouse.business.ShoppingCart;
 import com.sugarhouse.database.DatabaseCreator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -100,8 +96,6 @@ public class loginController extends HttpServlet {
                         if(!dc.registerUser(login, password, email))
                         {
                             errMsg += "Not able to register user.";
-                            
-                            System.out.println("Error registering user!");
                             return;
                         }
 			//If no registration issues occur, redirect user to login
@@ -138,7 +132,6 @@ public class loginController extends HttpServlet {
                             
                             if(session.getAttribute("cart") != null)
                             {
-                               System.out.println("Adding items to cart that were there prior to login");
                                usrCart.appendItems(((ShoppingCart) session.getAttribute("cart")).getItems());
                             }
                             

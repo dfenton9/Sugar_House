@@ -42,30 +42,46 @@ public class inventoryController extends HttpServlet {
         }
         DatabaseCreator dc = (DatabaseCreator)session.getAttribute("databaseConnection");
         
-        int units = Integer.parseInt(request.getParameter("quantity"));
-        
-        String strCost = request.getParameter("cost");
-        if(strCost.charAt(0) == '$')
-        {
-            strCost = strCost.substring(1);
-        }
-        
-        double cost = Double.parseDouble(strCost);
-        String name = request.getParameter("name");
-        String description = request.getParameter("description");
+
         
         if(action.equals("update"))
         {
             
             int productID = Integer.parseInt(request.getParameter("id"));
-            System.out.println("Updating: (" + productID+", " + name+", " +  cost+", " +  units+", " +  description +")");
+            int units = Integer.parseInt(request.getParameter("quantity"));
+
+            String strCost = request.getParameter("cost");
+            if(strCost.charAt(0) == '$')
+            {
+                strCost = strCost.substring(1);
+            }
+
+            double cost = Double.parseDouble(strCost);
+            String name = request.getParameter("name");
+            String description = request.getParameter("description");
+            
             dc.updateInventory(productID, name, cost, units, description);
         
             
         }else if (action.equals("insert"))
         {
-            System.out.println("Inserting: (" + name+", " +  cost+", " +  units+", " +  description +")");
-            dc.insertInventory(name, cost, units, description);
+            int units = Integer.parseInt(request.getParameter("quantity"));
+
+            String strCost = request.getParameter("cost");
+            if(strCost.charAt(0) == '$')
+            {
+                strCost = strCost.substring(1);
+            }
+
+            double cost = Double.parseDouble(strCost);
+            String name = request.getParameter("name");
+            String description = request.getParameter("description");
+            
+            //dc.insertInventory(name, cost, units, description);
+        }else if (action.equals("remove"))
+        {
+            int productID = Integer.parseInt(request.getParameter("id"));
+            dc.removeInventoryItem(productID);
         }
 
         session.setAttribute("ErrorMsg", errMsg);

@@ -64,7 +64,13 @@
         button { 
           width:100px; 
         } 
-        </style>        
+        input[type="submit"] {
+            margin-bottom: 10px;
+        }
+        </style>  
+        <script type="text/javascript" src="inputValidation.js">
+	
+        </script>
     </head>
     <body>
     <% 
@@ -123,7 +129,7 @@
                             <tr> 
                                 <td>#</td>
                                 <td>
-                                    <form id="addItem" action="inventoryController" method="post" >
+                                    <form id="addItem" action="inventoryController" method="post" onsubmit="return inventoryValidation(this)" >
                                         <input type="text" name="name" value="">
                                         <input type="hidden" name="action" value="insert">
                                     </form>
@@ -147,10 +153,14 @@
                             for(Product prod : dc.getProducts("id")) { %>
                             <tr>
                                 <td>
-                                    <form id="<%=prod.getId()%>" action="inventoryController" method="post">
+                                    <form id="<%=prod.getId()%>" action="inventoryController" method="post" onsubmit="return inventoryValidation(this)">
                                     <%= prod.getId() %>
                                     <input type="hidden" name="id" value="<%= prod.getId() %>">
                                     <input type="hidden" name="action" value="update">
+                                    </form>
+                                    <form id="rm<%=prod.getId()%>" action="inventoryController" method="post" onsubmit="return confirmDelete()">
+                                    <input type="hidden" name="id" value="<%= prod.getId() %>">
+                                    <input type="hidden" name="action" value="remove">
                                     </form>
                                 </td>
                                 <td>
@@ -168,6 +178,8 @@
                                 </td>
                                 <td>
                                     <input type="submit" form="<%=prod.getId()%>" value="Update Item" >
+                                    <br>
+                                    <input type="submit" form="rm<%=prod.getId()%>" value="Delete Item" >
                                 </td>
 
                             </tr>   

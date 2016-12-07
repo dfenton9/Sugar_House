@@ -106,6 +106,39 @@ public class DatabaseCreator {
 
     }
     
+    public List<String> getAllTableNames()
+    {
+        Statement stmt = null;
+        List<String> tables = new ArrayList();
+        ResultSet ret = null;
+        try {
+            stmt = conn.createStatement();
+            
+            ret = stmt.executeQuery("select TABLE_NAME from sys.Tables");
+
+            while(ret.next())
+            {
+                tables.add(ret.getString(1));
+            } 
+           
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        finally
+        {
+           // Release resources
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        
+        return tables;
+    }
+    
     private void createUsers()
     {
         Statement stmt = null;
@@ -140,8 +173,9 @@ public class DatabaseCreator {
         }
     }
     
-    public void getUsers()
+    public List<String> getUsers()
     {
+        List<String> users = new ArrayList();
         Statement stmt = null;
         ResultSet ret = null;
         try {
@@ -155,6 +189,9 @@ public class DatabaseCreator {
                 String login = ret.getString(2);
                 String pw = ret.getString(3);
                 String email = ret.getString(4);
+                
+                String userInfo = id +","+login+","+pw+","+email;
+                users.add(userInfo);
             }            
             
         } catch (SQLException ex) {
@@ -173,7 +210,7 @@ public class DatabaseCreator {
             ret = null;
             stmt = null;
         }
-        
+        return users;
     }
     
     public String getUsersLogin(int id)
@@ -219,7 +256,6 @@ public class DatabaseCreator {
         try {
             stmt = conn.createStatement();
             
-            System.out.println("Login: " + login + ", PW: " + password);
             ret = stmt.executeQuery("select LOGIN_ID, ID from users where (login_id ='" + login +"' and password ='" + password +"')");
 
                 Shopper usr = null;
@@ -245,7 +281,6 @@ public class DatabaseCreator {
             ret = null;
             stmt = null;
         }
-        System.out.println("retVal: " + retVal);
         return retVal;
     }
     
@@ -637,6 +672,34 @@ public class DatabaseCreator {
         }
     }    
     
+        public void removeInventoryItem(int prod_id)
+    {
+        Statement stmt = null;
+        try {
+            
+           stmt = conn.createStatement();
+           
+           if(stmt != null)
+           {
+                stmt.execute("DELETE FROM PRODUCTS WHERE ID =" + prod_id);
+           }
+           
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        finally
+        {
+           // Release resources
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }         
+    }
+    
     public int getInventory(int id)
     {
         Statement stmt = null;
@@ -673,6 +736,40 @@ public class DatabaseCreator {
         }  
         
         return inStock;
+    }
+    
+    public List<String> getItems()
+    {
+        List<String> items = new ArrayList();
+        Statement stmt = null;
+        ResultSet ret = null;
+        try {
+            stmt = conn.createStatement();
+            
+            ret = stmt.executeQuery("select * from items");
+            while(ret.next())
+                {
+                    String itemInfo = ret.getInt(1)+","+ret.getInt(2)+","+ret.getString(3)+","+ret.getInt(4)+","+ret.getInt(5)+","+ret.getDouble(6);
+                    items.add(itemInfo);
+                }
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally
+        {
+            try {
+                if(ret != null)
+                    ret.close();
+                if(stmt != null)
+                    stmt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            
+            ret = null;
+            stmt = null;
+        }
+        return items;
     }
     
     private void createItems()

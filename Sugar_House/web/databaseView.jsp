@@ -4,6 +4,7 @@
     Author     : danielfenton
 --%>
 
+<%@page import="java.text.NumberFormat"%>
 <%@page import="com.sugarhouse.database.DatabaseCreator"%>
 <%@page import="com.sugarhouse.business.Shopper"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -81,7 +82,82 @@
 			<!--/.nav-collapse -->
 		</div>
 	</div>
-        <h1>Hello World!</h1>
+        <div class="container">
+		<div class="row centered mt mb">
+
+
+			<h2 align="left">Database View</h2>
+                        
+                        <h3>User Database</h3>
+                        
+                        <table>
+                            <tr>
+                                <th>ID</th>
+                                <th>Login</th>
+                                <th>Password</th>
+                                <th>Email</th>
+                            </tr>
+                            
+                            <%
+                            for(String usr : dc.getUsers()){
+                                String[] userData = usr.split(",");
+                            %>
+                            <tr>
+                                <td><%=userData[0]%></td>
+                                <td><%=userData[1]%></td>
+                                <td><%=userData[2]%></td>
+                                <td><%=userData[3]%></td>
+                            </tr>
+                            
+                            <%}%>
+                            
+                        </table>
+                            
+                            <br/>
+                            <br/>
+                            <h3>Items Database</h3>
+                        
+                        <table>
+                            <tr>
+                                <th>ID</th>
+                                <th>User ID</th>
+                                <th>Name</th>
+                                <th>Prod ID</th>
+                                <th>Units</th>
+                                <th>Cost</th>
+                            </tr>
+                            
+                            <%
+                            NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                            for(String item : dc.getItems()){
+                                String[] itemData = item.split(",");
+                            %>
+                            <tr>
+                                <td><%=itemData[0]%></td>
+                                <td><%=itemData[1]%></td>
+                                <td><%=itemData[2]%></td>
+                                <td><%=itemData[3]%></td>
+                                <td><%=itemData[4]%></td>
+                                <td><%=formatter.format(Double.parseDouble(itemData[5]))%></td>
+                            </tr>
+                            
+                            <%}%>
+                            
+                        </table>
+
+			
+		</div>
+		<!--/row -->
+	</div>
+	<!--/container -->
+
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
     <%}%>
     </body>
 </html>
