@@ -1,0 +1,16 @@
+This is a list of features for the Sugar House web page:
+
+ - Embedded Derby Database
+ - Administrative Controls:
+    -When a user logs in with admin privliages they have the ability to:
+       - View/Print all Orders
+       - View/Print the current state of the inventory
+       - Manage inventory by adding/updating/removing items
+       - View User database (registered user informtion) and Stored shopping carts for users that logged out before checking out
+ - Restricted access to pages: Users that try to access restricted pages or pages that violate the work flow will be redirected back to the home page
+ - JavaScript validation on input fields
+ - Responsive error messages bad data or rule violation
+ - Several Severlet controllers to manage unique actions of the site
+ - SSL is applised to the checkout page where users enter credit card information
+ - Persisent shopping carts for logged in users. They are able to start filling their carts, logout, and return at a later time to the same cart state
+ 
