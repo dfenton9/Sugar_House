@@ -104,8 +104,8 @@ public class DatabaseCreator {
     public List<String> getAllTableNames()
     {
         Statement stmt = null;
-        List<String> tables = new ArrayList();
-        ResultSet ret = null;
+        ArrayList<String> tables = new ArrayList<String>();
+        ResultSet ret;
         try {
             stmt = conn.createStatement();
             
@@ -170,7 +170,7 @@ public class DatabaseCreator {
     
     public List<String> getUsers()
     {
-        List<String> users = new ArrayList();
+        ArrayList<String> users = new ArrayList<String>();
         Statement stmt = null;
         ResultSet ret = null;
         try {
@@ -737,7 +737,7 @@ public class DatabaseCreator {
     
     public List<String> getItems()
     {
-        List<String> items = new ArrayList();
+        ArrayList<String> items = new ArrayList<String>();
         Statement stmt = null;
         ResultSet ret = null;
         try {
