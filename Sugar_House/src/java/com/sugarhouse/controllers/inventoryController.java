@@ -7,7 +7,6 @@ package com.sugarhouse.controllers;
 
 import com.sugarhouse.database.DatabaseCreator;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -59,8 +58,13 @@ public class inventoryController extends HttpServlet {
             double cost = Double.parseDouble(strCost);
             String name = request.getParameter("name");
             String description = request.getParameter("description");
+            String isNewStr = request.getParameter("isNew");
+            int isNew = 0;
+            if(isNewStr != null && !isNewStr.equals(""))
+                isNew = 1;
+                
             
-            dc.updateInventory(productID, name, cost, units, description);
+            dc.updateInventory(productID, name, cost, units, description, isNew);
         
             
         }else if (action.equals("insert"))
@@ -76,8 +80,11 @@ public class inventoryController extends HttpServlet {
             double cost = Double.parseDouble(strCost);
             String name = request.getParameter("name");
             String description = request.getParameter("description");
-            
-            //dc.insertInventory(name, cost, units, description);
+            String isNewStr = request.getParameter("isNew");
+            int isNew = 0;
+            if(isNewStr != null && !isNewStr.equals(""))
+                isNew = 1;
+            dc.insertInventory(name, cost, units, description,isNew);
         }else if (action.equals("remove"))
         {
             int productID = Integer.parseInt(request.getParameter("id"));

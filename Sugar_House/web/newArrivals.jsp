@@ -1,3 +1,6 @@
+<%@page import="java.text.NumberFormat"%>
+<%@page import="com.sugarhouse.database.DatabaseCreator"%>
+<%@page import="com.sugarhouse.business.Product"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -47,6 +50,14 @@ button {
 } 
 </style>
 <body>
+      <% 
+          if(session.getAttribute("databaseConnection") == null)
+          {
+             session.setAttribute("databaseConnection", new DatabaseCreator());
+          }
+          
+          DatabaseCreator dc = (DatabaseCreator)session.getAttribute("databaseConnection");
+      %>    
 
 	<!-- Static navbar -->
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -100,32 +111,44 @@ button {
 				<p> We are excited to bring you a few limited edition items this holiday season.</p>
 			</div>
 			<div class="col-lg-10 col-lg-offset-1 mt">
-
+                            <% if(session.getAttribute("ErrorMsg") != null && !session.getAttribute("ErrorMsg").equals("")){%>
+                                <div style="color:red;"><%=session.getAttribute("ErrorMsg")%></div>
+                            <%} session.setAttribute("ErrorMsg","");%>
 				<table>
+                                    <%  NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                                        int index = 0;
+                                        for(Product prod : dc.getProducts("name")) { 
+                                            if(prod.getIsNew() == 1)
+                                            {%>
 					<tr>
-						<td><img class="img-responsive"
-							src="assets/img/new_candy.jpg" width="600"></td>
+						<td><img class="img-responsive" src="<%=prod.getImageSrc()%>"
+							width="600"></td>
 						<td align="left">
-							<p>Cost: $10.00</p>
-							<p>Item Number: 0006</p>
-							<p>Description: Back again this year by popular demand are
-								our premium maple candies</p>
-					</tr>
-
-					<tr>
-						<td><img class="img-responsive"
-							src="assets/img/holiday_present.jpg" width="600"></td>
-						<td align="left">
-							<p>Cost: $100.00</p>
-							<p>Item Number: 0007</p>
-							<p>Description: Our holiday package comes with our signature
-								maple syrup, 3 boxes of maple candies, and a gold plated maple
-								leaf tree ornament all beautifully wrapped and ready to deliver
-								to friends or family</p>
+                                                        <p><%= prod.getName() %></p>
+							<p>Cost: <%=formatter.format(prod.getCost())%></p>
+							<p>Description: <%=prod.getDescription() %> </p>
+                                                        <% if(prod.getInventory() < 10 && prod.getInventory() > 0 ) { %>
+                                                        <p style="color:green;">Only <%= prod.getInventory() %> left in stock!</p>
+                                                        <% }else if(prod.getInventory() < 1){ %>
+                                                        <p style="color:red;">This item is out of stock!</p>
+                                                        <% } %>
 						</td>
+                                                <td> <form name="prod<%=prod.getId()%>" action="shoppingCartController" method="get" onsubmit="return quantityValidation(this)">
+						Quantity: <p></p> <input type="text" name="quantity" maxlength="3" size="9">
+						<p></p>
+						<div class="button-section">
+                                                    <input type="submit" value="Add to Cart" <%if(!prod.isAvailable()){%> disabled<%}%> >
+						<input type="hidden" name="action" value="addNew">
+                                                <input type="hidden" name="name" value="<%=prod.getName()%>">
+						<input type="hidden" name="ID" value="<%=prod.getId()%>">
+						<input type="hidden" name="cost" value="<%=prod.getCost()%>">
+						</div></form></td>					
 					</tr>
+                                        <%} 
+                                        }%>
 				</table>
 			</div>
+
 
 
 		</div>

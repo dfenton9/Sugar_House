@@ -33,19 +33,6 @@
     <![endif]-->
 
 <style>
-table, td, th {
-	border: 1px solid #ddd;
-	text-align: left;
-}
-
-table {
-	border-collapse: collapse;
-	width: 100%;
-}
-
-th, td {
-	padding: 15px;
-}
 
 button {
 	width: 100px;
@@ -55,6 +42,16 @@ button {
 	display: none;
 }€‹
 </style>
+<script>
+    function toggleBillingDiv()
+    {
+        $("#billingInformation").toggle();
+    }
+</script>
+<script type="text/javascript" src="inputValidation.js">
+	
+</script>
+        
 </head>
 
 <body>
@@ -106,7 +103,7 @@ button {
                         <% if(session.getAttribute("ErrorMsg") != null && !session.getAttribute("ErrorMsg").equals("")){%>
                             <div style="color:red;"><%=session.getAttribute("ErrorMsg")%></div>
                         <%} session.setAttribute("ErrorMsg","");%>
-			<form action="creditCardController" method="post">
+                        <form action="creditCardController" method="get" onsubmit="return validateConfirmationData(this)">
 				<div class="section"></div>
 				<div class="inner-wrap" align="left">
 					<!-- Main text for the confirmation page -->
@@ -116,14 +113,14 @@ button {
 					<div class="inner-wrap" align="left">
 						<label>Credit Card Type</label>
 						<div class="radioboxes">
-							<input type="radio" name="cardType" checked value="VISA">VISA<br>
-							<input type="radio" name="cardType" value="Mastercard">Mastercard<br>
-							<input type="radio" name="cardType" value="Discover">Discover
+                                                    <input type="radio" name="cardType" checked value="VISA"><span class="cbSpan">VISA</span><br>
+							<input type="radio" name="cardType" value="Mastercard"><span class="cbSpan">Mastercard</span><br>
+							<input type="radio" name="cardType" value="Discover"><span class="cbSpan">Discover</span>
 						</div>
-						<label>Credit Card Number <input type="text"
-							name="creditNumber" value="" maxlength="10" id="creditNumber" /></label>
+						<label>*Credit Card Number <input type="text"
+							name="creditNumber" value="" maxlength="14" id="creditNumber" /></label>
 
-						<br> <label>Credit Card Expiration Date (MM/yyyy) <script
+						<br> <label>*Credit Card Expiration Date (MM/yyyy) <script
 								type="text/javascript" src="jquery-1.12.4.js"></script> <script
 								type="text/javascript" src="jquery-ui.js"></script> <script
 								type="text/javascript" src="calendar.js"></script> <input
@@ -133,11 +130,86 @@ button {
 						</label>
 					</div>
 				</div>
+                                <div class="inner-wrap" align="left" >
+					<!-- Main text for the confirmation page -->
+					<div class="section"></div>
+					<div class="inner-wrap" align="left">
+                                            
+						<h2>Shipping & Billing Information</h2>
+                                                <div id ="shippingInformation">
+                                                        
+                                                    <input type="checkbox" name="shipSameAsBill" value="same" onchange="toggleBillingDiv()"><span class="cbSpan">Shipping and Billing Addresses are the same.</span><br>
+
+                                                    <fieldset>
+                                                        <legend>Shipping Address</legend>
+                                                        <table>
+                                                            <tr>
+                                                                <td><b>*Name:</b></td>
+                                                                <td><input type="text" name="name" value="" maxlength="30" /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>*Address:</b></td>
+                                                                <td><input type="text" name="address1" value="" maxlength="60" /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Address:</td>
+                                                                <td><input type="text" name="address2" value="" maxlength="60" /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>*City:</b></td>
+                                                                <td><input type="text" name="city" value="" maxlength="30" /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>*State:</b></td>
+                                                                <td><input type="text" name="state" value="" maxlength="25" /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>*Zip:</b></td>
+                                                                <td><input type="text" name="zip" value="" maxlength="5" /></td>
+                                                            </tr>
+                                                        </table>
+                                                    </fieldset>
+                                                </div>
+                                            <div id ="billingInformation" >
+                                                <br>
+                                                <fieldset>
+                                                        <legend>Billing Address</legend>
+                                                        <table>
+                                                            <tr>
+                                                                <td><b>*Name:</b></td>
+                                                                <td><input type="text" name="billName" value="" maxlength="30" /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>*Address:</b></td>
+                                                                <td><input type="text" name="billAddress1" value="" maxlength="60" /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Address:</td>
+                                                                <td><input type="text" name="billAddress2" value="" maxlength="60" /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>*City:</b></td>
+                                                                <td><input type="text" name="billCity" value="" maxlength="30" /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>*State:</b></td>
+                                                                <td><input type="text" name="billState" value="" maxlength="25" /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><b>*Zip:</b></td>
+                                                                <td><input type="text" name="billZip" value="" maxlength="5" /></td>
+                                                            </tr>
+                                                        </table>
+                                                    </fieldset>
+                                            </div>
+					</div>
+                                        <br>
+                                        <br>
+				</div>
 
 				<div class="button-section" align="left">
-					<input type="submit" value="Confirm Order" style="width: 250px"
-						onclick="isNumeric()"> <input type="hidden" name="action"
-						value="confirm">
+					<input type="submit" value="Confirm Order" style="width: 250px"> 
+                                        <input type="hidden" name="action" value="confirm">
 				</div>
 			</form>
 		</div>

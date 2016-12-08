@@ -53,17 +53,6 @@ public class loginController extends HttpServlet {
 			//Redirect user to registration page if they are new
 			url = "/register.jsp";
 		}
-		if(action.equals("checkout")){
-			//Redirect user to the checkout page
-                        if(session.getAttribute("User") == null)
-                        {
-                            errMsg = "Please login or register before completing your order.";
-                            url = "/logIn.jsp";
-                        }else
-                        {
-                            url = "/checkout.jsp";
-                        }
-		}
 		if(action.equals("marketplace")){
 			//Redirect user to the marketplace
 			url = "/marketplace.jsp";

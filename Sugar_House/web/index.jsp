@@ -87,10 +87,10 @@
 	<div id="headerwrap">
 	    <div class="container">
 			<div class="row">
-				<div class="col-lg-10 col-lg-offset-3">
+				<div class="col-lg-10 col-lg-offset-3 welcome_banner">
 					<h4>
                                             <% if(session.getAttribute("User") != null){%>
-                                            <%=((Shopper)session.getAttribute("User")).getName() %>
+                                            <%=((Shopper)session.getAttribute("User")).getName() + "," %>
                                             <%}%>
                                             Welcome to
                                         </h4>

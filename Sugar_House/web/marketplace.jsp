@@ -1,3 +1,4 @@
+<%@page import="java.text.NumberFormat"%>
 <%@page import="com.sugarhouse.business.Product"%>
 <%@page import="com.sugarhouse.database.DatabaseCreator"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -118,14 +119,15 @@ button {
                                 <div style="color:red;"><%=session.getAttribute("ErrorMsg")%></div>
                             <%} session.setAttribute("ErrorMsg","");%>
 				<table>
-                                    <% int index = 0;
+                                    <%  NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                                        int index = 0;
                                         for(Product prod : dc.getProducts("name")) { %>
 					<tr>
 						<td><img class="img-responsive" src="<%=prod.getImageSrc()%>"
 							width="600"></td>
 						<td align="left">
                                                         <p><%= prod.getName() %></p>
-							<p>Cost: $<%=prod.getCost()%></p>
+                                                        <p>Cost: <%=formatter.format(prod.getCost())%></p>
 							<p>Description: <%=prod.getDescription() %> </p>
                                                         <% if(prod.getInventory() < 10 && prod.getInventory() > 0 ) { %>
                                                         <p style="color:green;">Only <%= prod.getInventory() %> left in stock!</p>

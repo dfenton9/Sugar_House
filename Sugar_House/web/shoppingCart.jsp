@@ -164,7 +164,10 @@ button {
 					<td></td>
 				</tr>
 			</table>
-
+                        <%if (session.getAttribute("User") == null)
+                        {%>
+                        <div> Must be logged in before checkout can be completed. <a href="/Sugar_House/logIn.jsp">Login Here</a></div>
+                        <%}else{%>
 			<form action="/Sugar_House/checkout.jsp" method="POST" style="width: 400px">
 				<p></p>
 				<p></p>
@@ -174,6 +177,7 @@ button {
 				</div>
 				<p></p>
 			</form>
+                        <%}%>
 			<%
 				}
 			%>

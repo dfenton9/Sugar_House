@@ -124,6 +124,7 @@
                                 <th>Cost</th>
                                 <th>Units</th>
                                 <th>Notes</th>
+                                <th><p>New</p><p>Arrival</p></th>
                                 <th>Action</th>
                             </tr>
                             <tr> 
@@ -143,6 +144,9 @@
                                 </td>
                                 <td>
                                     <textarea name="description" form="addItem"></textarea>
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="isNew" value="new" form="addItem">
                                 </td>
                                 <td>
                                     <input type="submit" form="addItem" value="Add Item" >
@@ -175,6 +179,10 @@
                                 </td>
                                 <td>
                                     <textarea name="description" form="<%=prod.getId()%>"><%= prod.getDescription()%></textarea>
+                                </td>
+                                
+                                <td>
+                                    <input type="checkbox" name="isNew" value="new" form="<%=prod.getId()%>" <%if(prod.getIsNew() == 1){%>checked="checked"<%}%>>
                                 </td>
                                 <td>
                                     <input type="submit" form="<%=prod.getId()%>" value="Update Item" >

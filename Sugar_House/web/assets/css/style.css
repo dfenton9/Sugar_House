@@ -82,8 +82,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar-default {
-	background-color: transparent;
+	/*background-color: transparent;*/
 	border-color: transparent;
+        opacity: .7;
+        background-color: black;
 }
 
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
@@ -219,7 +221,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
+.welcome_banner {
+    background-color: black;
+    border-radius: 100px;
+    opacity: .7;
+}
 
+.cbSpan {
+    margin-left: 15px;
+}
 
 /* Gallery */
 .gallery {

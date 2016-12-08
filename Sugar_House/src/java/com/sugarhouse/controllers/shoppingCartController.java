@@ -44,7 +44,7 @@ public class shoppingCartController extends HttpServlet {
         }
         DatabaseCreator dc = (DatabaseCreator)session.getAttribute("databaseConnection");
         
-        if(action.equals("add") || action.equals("remove")){
+        if(action.equals("add") || action.equals("addNew") || action.equals("remove")){
 
             //TODO: If user is not logged in, redirect to login page
 
@@ -71,8 +71,8 @@ public class shoppingCartController extends HttpServlet {
             } catch (NumberFormatException nfe) {
                     quantity = 1;
             }
-            if(action.equals("add")){
-                int inStock = dc.getInventory(productID);
+            if(action.equals("add") || action.equals("addNew")){
+                int inStock = dc.getInventoryUnits(productID);
                 if(inStock - quantity < 1)
                 {
                     errMsg = "Only " + inStock + " " + name +" product(s) in stock. Please enter a quantity of " + inStock +" or less.";
@@ -80,7 +80,10 @@ public class shoppingCartController extends HttpServlet {
                 {
                   cart.addItem(quantity, productID, cost, name);  
                 }
-                url = "/marketplace.jsp";
+                if(action.equals("add"))
+                    url = "/marketplace.jsp";
+                if(action.equals("addNew"))
+                    url = "/newArrivals.jsp";
             }
             if(action.equals("remove")){
                     cart.removeItem(quantity, productID, cost, name);

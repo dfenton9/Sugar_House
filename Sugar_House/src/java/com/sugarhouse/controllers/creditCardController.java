@@ -9,7 +9,6 @@ import com.sugarhouse.business.Shopper;
 import com.sugarhouse.business.ShoppingCart;
 import com.sugarhouse.database.DatabaseCreator;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -46,38 +45,20 @@ public class creditCardController extends HttpServlet {
            session.setAttribute("databaseConnection", new DatabaseCreator());
         }
         DatabaseCreator dc = (DatabaseCreator)session.getAttribute("databaseConnection");
-        errMsg = "";
-        String creditType = request.getParameter("cardType");
-        String creditNumber = request.getParameter("creditNumber");
-        String expirationDate = request.getParameter("date");
-        String regex = "\\d+";
-        System.out.println("Credit type is: " + creditType);
-        System.out.println("Credit number is: " + creditNumber);
-        System.out.println("Exp date is: " + expirationDate);
 
-        //Check if all fields were entered
-        if(creditType == null || creditNumber == null || expirationDate == null){
-                errMsg += "One or more fields was left empty. Please fill out all fields to continue.";
-        }
-        //check if credit number is numeric
-        if(!creditNumber.matches(regex)){
-                errMsg += "Credit number provided is invalid.";
-                System.out.println("Invalid credit number");
-        }
-        if(errMsg.equals(""))
-        {
-            session = request.getSession();
-            ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-            //Modify the inventory to reflect the completion of this order
-            updateInventory(cart, dc);
-            //Add this order to the Orders table
-            dc.insertOrder(((Shopper)session.getAttribute("User")).getId(), cart.getTotalCost());
-            dc.removeItems(((Shopper)session.getAttribute("User")).getId());
-            cart.resetCart();
-            //Redirect user to the thank you page
-            url = "/thankyou.jsp";
-            session.setAttribute("cart", cart);
-        }
+        session = request.getSession();
+        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        //Modify the inventory to reflect the completion of this order
+        updateInventory(cart, dc);
+        //Add this order to the Orders table
+        dc.insertOrder(((Shopper)session.getAttribute("User")).getId(), cart.getTotalCost());
+        dc.removeItems(((Shopper)session.getAttribute("User")).getId());
+        cart.resetCart();
+        
+        //Redirect user to the thank you page
+        url = "/thankyou.jsp";
+        
+        session.setAttribute("cart", cart);
         
         session.setAttribute("ErrorMsg", errMsg);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);

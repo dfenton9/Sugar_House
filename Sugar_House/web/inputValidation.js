@@ -9,7 +9,7 @@ function inputValidation(){
 	
 	//Ensure all fields are entered for login
 
-	if(loginId == "" || email == "" || password == ""){
+	if(loginId === "" || email === "" || password === ""){
 		alert("No fields can be left blank.");
 		return false;
 	}
@@ -87,4 +87,56 @@ function inventoryValidation(ele)
     }
     
     return true;
+}
+
+function validateConfirmationData(ele)
+{
+    var ccNumberStr = ele.creditNumber.value;
+    var ccExDateStr = ele.date.value;
+    var shipNameStr = ele.name.value;
+    var shipAddr1Str = ele.address1.value;
+    var shipCityStr = ele.city.value;
+    var shipStateStr = ele.state.value;
+    var shipZipStr = ele.zip.value;
+    var billNameStr = ele.billName.value;
+    var billAddr1Str = ele.billAddress1.value;
+    var billCityStr = ele.billCity.value;
+    var billStateStr = ele.billState.value;
+    var billZipStr = ele.billZip.value;
+    var isSame = ele.shipSameAsBill.checked;
+    
+    if(ccNumberStr === null || ccExDateStr === null || shipNameStr === null || shipAddr1Str === null || shipCityStr === null || shipStateStr === null || shipZipStr === null ||
+            ccNumberStr === "" || ccExDateStr === "" || shipNameStr === "" || shipAddr1Str === "" || shipCityStr === "" || shipStateStr === "" || shipZipStr === "")
+    {
+        alert("Please fill in all fields marked with (*) before confirming order.");
+        return false;
+    }
+    var regex  = /^\d{14}$/;
+    if (!regex.test(ccNumberStr))
+    {
+        alert("Must enter a 14 digit card number.");
+        return false;
+    }
+    if(!parseInt(shipZipStr) || (shipZipStr%1)!==0 || shipZipStr < 0 ){
+        alert("Invalid Shipping Zip Code.");
+        return false;
+    }
+    
+    if(!isSame)
+    {
+        if(billNameStr === null || billAddr1Str === null || billCityStr === null || billStateStr === null || billZipStr === null ||
+            billNameStr === "" || billAddr1Str === "" || billCityStr === "" || billStateStr === "" || billZipStr === "")
+        {
+            alert("Please fill in all fields marked with (*) before confirming order.");
+            return false;
+        }
+        
+        if(!parseInt(billZipStr) || (billZipStr%1)!==0 || billZipStr < 0 )
+        {
+            alert("Invalid Billing Zip Code.");
+            return false;
+        }
+        
+    return true;
+    }
 }

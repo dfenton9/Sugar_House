@@ -17,6 +17,7 @@ public class Product {
     private double cost;
     private int inventory;
     private String imgSrc;
+    private int isNew;
     
     
     
@@ -25,7 +26,7 @@ public class Product {
         
     }
     
-    public Product(int id, String name, String description, double cost, int inventory, String imgSrc)
+    public Product(int id, String name, String description, double cost, int inventory, String imgSrc, int isNew)
     {
         this.id = id;
         this.name = name;
@@ -33,6 +34,7 @@ public class Product {
         this.cost = cost;
         this.inventory = inventory;
         this.imgSrc = imgSrc;
+        this.isNew = isNew;
     }
     
     /**
@@ -70,6 +72,11 @@ public class Product {
         this.imgSrc = imgSrc;
     }
     
+    public void setIsNew(int newly)
+    {
+        this.isNew = newly;
+    }
+    
     /**
      * 
      * Getters
@@ -103,6 +110,11 @@ public class Product {
     public String getImageSrc()
     {
         return imgSrc;
+    }
+    
+    public int getIsNew()
+    {
+        return isNew;
     }
     
     /**

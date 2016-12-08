@@ -13,16 +13,11 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -353,26 +348,27 @@ public class DatabaseCreator {
              +"PROD_DESCRIPTION VARCHAR(512),"
              +"PROD_COST DECIMAL(12,2),"
              +"PROD_INVENTORY INTEGER,"
-             +"PROD_IMG_SRC VARCHAR(512))");
+             +"PROD_IMG_SRC VARCHAR(512),"
+             + "NEW_PROD SMALLINT)");
             
             
-            stmt.execute("INSERT INTO PRODUCTS VALUES (1,'Maple Leaves','1 Dozen Pure Maple Leave Candies', 6.99,200,'assets/img/new_candy.jpg')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (2,'Fancy Syrup','1 Gallon of Pure Vermont Fancy Maple Syrup',48.99, 300,'assets/img/spoon.jpg')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (3,'Fancy Syrup','1 Quart of Pure Vermont Fancy Maple Syrup',32.99, 300,'assets/img/spoon.jpg')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (4,'Fancy Syrup','1 Pint of Pure Vermont Fancy Maple Syrup',14.99, 300,'assets/img/spoon.jpg')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (5,'Syrup Sampler','Golden, Amber, and Dark Maple Syrup Sampler (12oz ea.)',12.99, 300,'assets/img/sampler.png')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (6,'Maple BBQ Sauce','Maple infused BBQ Sauce (24oz)',10.99, 300,'assets/img/maple_bbq.jpg')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (7,'Maple Cream','Pure Maple Syrup Spread goes perfectly with morning toast or other baked goods (8oz)',6.99, 300,'assets/img/maple_spread.jpg')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (8,'Maple Butter','Pure Maple Syrup Spread goes perfectly with morning toast or other baked goods (8oz)',7.99, 300,'assets/img/maple_spread.jpg')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (9,'Maple Sugar','Pure, Granulated, Maple Sugar (16oz)',15.99, 300,'assets/img/maple_sugar.jpg')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (10,'Maple Basket','This holiday treat contains: Maple Cream (8oz), Maple Butter (8oz), Maple Leaves (12pc), 1 Pint of Syrup, Pancake Mix, and Maple Fudge (8oz).',59.99, 300,'assets/img/maple_basket.jpg')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (11,'Maple Fudge','Pure Maple Fudge (8oz)',8.99, 300,'assets/img/maple_fudge.jpg')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (12,'Medium Amber Syrup','1 Gallon of Pure Vermont Medium Amber Maple Syrup',48.99, 300,'assets/img/spoon.jpg')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (13,'Medium Amber Syrup','1 Quart of Pure Vermont Medium Amber Maple Syrup',32.99, 300,'assets/img/spoon.jpg')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (14,'Medium Amber Syrup','1 Pint of Pure Vermont Medium Amber Maple Syrup',14.99, 300,'assets/img/spoon.jpg')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (15,'Dark Amber Syrup','1 Gallon of Pure Vermont Dark Amber Maple Syrup',48.99, 300,'assets/img/spoon.jpg')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (16,'Dark Amber Syrup','1 Quart of Pure Vermont Dark Amber Maple Syrup',32.99, 300,'assets/img/spoon.jpg')");
-            stmt.execute("INSERT INTO PRODUCTS VALUES (17,'Dark Amber Syrup','1 Pint of Pure Vermont Dark Amber Maple Syrup',14.99, 300,'assets/img/spoon.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (1,'Maple Leaves','1 Dozen Pure Maple Leave Candies', 6.99,200,'assets/img/new_candy.jpg',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (2,'Fancy Syrup','1 Gallon of Pure Vermont Fancy Maple Syrup',48.99, 300,'assets/img/spoon.jpg',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (3,'Fancy Syrup','1 Quart of Pure Vermont Fancy Maple Syrup',32.99, 300,'assets/img/spoon.jpg',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (4,'Fancy Syrup','1 Pint of Pure Vermont Fancy Maple Syrup',14.99, 300,'assets/img/spoon.jpg',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (5,'Syrup Sampler','Golden, Amber, and Dark Maple Syrup Sampler (12oz ea.)',12.99, 300,'assets/img/sampler.png',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (6,'Maple BBQ Sauce','Maple infused BBQ Sauce (24oz)',10.99, 300,'assets/img/maple_bbq.jpg',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (7,'Maple Cream','Pure Maple Syrup Spread goes perfectly with morning toast or other baked goods (8oz)',6.99, 300,'assets/img/maple_spread.jpg',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (8,'Maple Butter','Pure Maple Syrup Spread goes perfectly with morning toast or other baked goods (8oz)',7.99, 300,'assets/img/maple_spread.jpg',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (9,'Maple Sugar','Pure, Granulated, Maple Sugar (16oz)',15.99, 300,'assets/img/maple_sugar.jpg',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (10,'Maple Basket','This holiday treat contains: Maple Cream (8oz), Maple Butter (8oz), Maple Leaves (12pc), 1 Pint of Syrup, Pancake Mix, and Maple Fudge (8oz).',59.99, 300,'assets/img/maple_basket.jpg',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (11,'Maple Fudge','Pure Maple Fudge (8oz)',8.99, 300,'assets/img/maple_fudge.jpg',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (12,'Medium Amber Syrup','1 Gallon of Pure Vermont Medium Amber Maple Syrup',48.99, 300,'assets/img/spoon.jpg',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (13,'Medium Amber Syrup','1 Quart of Pure Vermont Medium Amber Maple Syrup',32.99, 300,'assets/img/spoon.jpg',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (14,'Medium Amber Syrup','1 Pint of Pure Vermont Medium Amber Maple Syrup',14.99, 300,'assets/img/spoon.jpg',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (15,'Dark Amber Syrup','1 Gallon of Pure Vermont Dark Amber Maple Syrup',48.99, 300,'assets/img/spoon.jpg',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (16,'Dark Amber Syrup','1 Quart of Pure Vermont Dark Amber Maple Syrup',32.99, 300,'assets/img/spoon.jpg',0)");
+            stmt.execute("INSERT INTO PRODUCTS VALUES (17,'Dark Amber Syrup','1 Pint of Pure Vermont Dark Amber Maple Syrup',14.99, 300,'assets/img/spoon.jpg',0)");
            }
            
         } catch (SQLException ex) {
@@ -413,7 +409,8 @@ public class DatabaseCreator {
                 double cost = ret.getDouble(4);
                 int inventory = ret.getInt(5);
                 String imgSrc = ret.getString(6);
-                Product prod = new Product(id, name, desc, cost, inventory, imgSrc);
+                int isNew = ret.getInt(7);
+                Product prod = new Product(id, name, desc, cost, inventory, imgSrc, isNew);
                 products.add(prod);
             }            
             
@@ -605,7 +602,7 @@ public class DatabaseCreator {
         }
     }
     
-    public void updateInventory(int id, String name, double cost, int units, String description)
+    public void updateInventory(int id, String name, double cost, int units, String description, int isNew)
     {
         Statement stmt = null;
         ResultSet ret = null;
@@ -616,7 +613,7 @@ public class DatabaseCreator {
            if(stmt != null)
            {
                
-            stmt.execute("UPDATE PRODUCTS SET PROD_NAME ='" + name + "', PROD_DESCRIPTION ='" + description + "', PROD_COST = " + cost + ", PROD_INVENTORY =" + units + " WHERE ID =" + id);
+            stmt.execute("UPDATE PRODUCTS SET PROD_NAME ='" + name + "', PROD_DESCRIPTION ='" + description + "', PROD_COST = " + cost + ", PROD_INVENTORY =" + units + ", NEW_PROD=" + isNew + " WHERE ID =" + id);
            }
            
         } catch (SQLException ex) {
@@ -635,7 +632,7 @@ public class DatabaseCreator {
         }
     }
     
-    public void insertInventory(String name, double cost, int units, String description)
+    public void insertInventory(String name, double cost, int units, String description, int isNew)
     {
         Statement stmt = null;
         ResultSet ret = null;
@@ -653,7 +650,7 @@ public class DatabaseCreator {
             }
             newId = currentMax + 1;
             //Insert new user into table with all their information
-            stmt.execute("INSERT INTO PRODUCTS (ID, PROD_NAME, PROD_DESCRIPTION, PROD_COST, PROD_INVENTORY, PROD_IMG_SRC ) VALUES ("+ newId+ ",'" + name +"','" + description +"',"+ cost + "," + units +",'assets/img/leaf.jpg')");
+            stmt.execute("INSERT INTO PRODUCTS (ID, PROD_NAME, PROD_DESCRIPTION, PROD_COST, PROD_INVENTORY, PROD_IMG_SRC, NEW_PROD ) VALUES ("+ newId+ ",'" + name +"','" + description +"',"+ cost + "," + units +",'assets/img/leaf.jpg',"+isNew+")");
         } catch (SQLException ex) {
             ex.printStackTrace();
         }finally
@@ -700,7 +697,7 @@ public class DatabaseCreator {
         }         
     }
     
-    public int getInventory(int id)
+    public int getInventoryUnits(int id)
     {
         Statement stmt = null;
         ResultSet ret = null;
