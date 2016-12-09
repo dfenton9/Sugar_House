@@ -5,6 +5,7 @@
  */
 package com.sugarhouse.controllers;
 
+import com.sugarhouse.business.CartItem;
 import com.sugarhouse.business.ShoppingCart;
 import com.sugarhouse.database.DatabaseCreator;
 import java.io.IOException;
@@ -73,12 +74,29 @@ public class shoppingCartController extends HttpServlet {
             }
             if(action.equals("add") || action.equals("addNew")){
                 int inStock = dc.getInventoryUnits(productID);
-                if(inStock - quantity < 1)
+                if(inStock - quantity < 0)
                 {
                     errMsg = "Only " + inStock + " " + name +" product(s) in stock. Please enter a quantity of " + inStock +" or less.";
                 }else
                 {
-                  cart.addItem(quantity, productID, cost, name);  
+                    CartItem item = cart.alreadyInCart(productID);
+                    if(item != null)
+                    {
+                        int tempQuant = item.getQuantity();
+                        int newQuant = tempQuant + quantity;
+                        if(inStock - newQuant < 0)
+                        {
+                            errMsg = "Only " + inStock + " " + name +" product(s) in stock. New quantity ("+quantity+") plus amount already in cart ("+tempQuant+") exceeds available products.";
+                        }else
+                        {
+                            item.setQuantity(newQuant);
+                            cart.recalculateTotal();
+                        }
+                    }else
+                    {
+                        item = new CartItem(productID, quantity, cost, name);
+                        cart.addItem(item);
+                    }
                 }
                 if(action.equals("add"))
                     url = "/marketplace.jsp";
@@ -86,12 +104,26 @@ public class shoppingCartController extends HttpServlet {
                     url = "/newArrivals.jsp";
             }
             if(action.equals("remove")){
-                    cart.removeItem(quantity, productID, cost, name);
-                    url = "/shoppingCart.jsp";
+                CartItem item = new CartItem(productID, quantity, cost, name);
+                cart.removeItem(item);
+                url = "/shoppingCart.jsp";
             }
+            
             session.setAttribute("cart", cart);
 
 
+        }
+        if(action.equals("update"))
+        {
+            String quantityString = request.getParameter("quantity");
+            int productID = Integer.parseInt(request.getParameter("id"));
+            int quantity = Integer.parseInt(quantityString);
+            ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+            CartItem item = cart.alreadyInCart(productID);
+            item.setQuantity(quantity);
+            cart.recalculateTotal();
+            System.out.println("WOO HOO!! Updated quantity value!!");
+            url = "/shoppingCart.jsp";
         }
         
         session.setAttribute("ErrorMsg", errMsg);

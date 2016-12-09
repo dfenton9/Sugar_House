@@ -4,6 +4,7 @@
     Author     : Snyder
 --%>
 
+<%@page import="java.text.NumberFormat"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -97,8 +98,7 @@ button {
 			<%
 				session = request.getSession();
 				ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-				ArrayList<String> items = cart.getItems();
-				Double totalCost = cart.getTotalCost();
+                                NumberFormat formatter = NumberFormat.getCurrencyInstance();
 			%>
                         <% if(session.getAttribute("ErrorMsg") != null && !session.getAttribute("ErrorMsg").equals("")){%>
                             <div style="color:red;"><%=session.getAttribute("ErrorMsg")%></div>
@@ -107,7 +107,7 @@ button {
 				<div class="section"></div>
 				<div class="inner-wrap" align="left">
 					<!-- Main text for the confirmation page -->
-					<p>Your total is: $${cart.totalCost}0. Please fill in the
+                                        <p>Your total is: <%=formatter.format(cart.getTotalCost())%>. Please fill in the
 						payment information below to checkout.</p>
 					<div class="section"></div>
 					<div class="inner-wrap" align="left">

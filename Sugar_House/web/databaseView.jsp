@@ -124,7 +124,7 @@
                                 <th>Name</th>
                                 <th>Prod ID</th>
                                 <th>Units</th>
-                                <th>Cost</th>
+                                <th>Unit Cost</th>
                             </tr>
                             
                             <%

@@ -5,6 +5,7 @@
  */
 package com.sugarhouse.controllers;
 
+import com.sugarhouse.business.CartItem;
 import com.sugarhouse.business.Shopper;
 import com.sugarhouse.business.ShoppingCart;
 import com.sugarhouse.database.DatabaseCreator;
@@ -67,16 +68,12 @@ public class creditCardController extends HttpServlet {
     
     private void updateInventory( ShoppingCart cart, DatabaseCreator dc)
     {
-        List<String> items = new ArrayList<String>();
+        List<CartItem> items = new ArrayList<CartItem>();
         items = cart.getItems();
 
-        for (int i = 0; i < items.size(); i++) {
-            String item = items.get(i);
-            String[] splitItem = item.split(",");
-            int itemQuantity = Integer.parseInt(splitItem[1]);
-            int itemID = Integer.parseInt(splitItem[2]);
+        for (CartItem item : items) {
 
-            dc.updateInventory(itemID, itemQuantity);
+            dc.updateInventory(item.getProdId(), item.getQuantity());
 
 
         }

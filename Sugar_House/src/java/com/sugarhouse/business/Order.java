@@ -5,6 +5,7 @@
  */
 package com.sugarhouse.business;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,7 +14,7 @@ import java.text.SimpleDateFormat;
  *
  * @author danielfenton
  */
-public class Order {
+public class Order implements Serializable{
     
     private int id;
     private int uid;

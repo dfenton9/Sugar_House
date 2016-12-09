@@ -5,6 +5,7 @@
  */
 package com.sugarhouse.database;
 
+import com.sugarhouse.business.CartItem;
 import com.sugarhouse.business.Order;
 import com.sugarhouse.business.Product;
 import com.sugarhouse.business.Shopper;
@@ -150,6 +151,7 @@ public class DatabaseCreator {
             
             stmt.execute("INSERT INTO USERS VALUES (1,'superuser','easyAce123','super.user@foo.com')");
             stmt.execute("INSERT INTO USERS VALUES (2,'admin','admin1234','admin.user@foo.com')");
+            stmt.execute("INSERT INTO USERS VALUES (3,'dfenton9','asd123','dfenton9@gmail.com')");
            }
            
         } catch (SQLException ex) {
@@ -842,6 +844,7 @@ public class DatabaseCreator {
     public ShoppingCart getItems(int usr_id)
     {
         ShoppingCart sc = new ShoppingCart();
+        
         Statement stmt = null;
         ResultSet ret = null;
         int inStock = -1;
@@ -852,10 +855,12 @@ public class DatabaseCreator {
            if(stmt != null)
            {
                 //Calculate latest ID value
-                ret = stmt.executeQuery("SELECT NAME, PROD_ID, QUANTITY, COST FROM ITEMS WHERE USER_ID=" + usr_id);
+            
+                ret = stmt.executeQuery("SELECT PROD_ID, QUANTITY, COST, NAME FROM ITEMS WHERE USER_ID=" + usr_id);
                 while(ret.next())
                 {
-                    sc.addItem(ret.getInt(3), ret.getInt(2), ret.getDouble(4), ret.getString(1));
+                    CartItem cartItem = new CartItem(ret.getInt(1), ret.getInt(2), ret.getDouble(3), ret.getString(4));
+                    sc.addItem(cartItem);
                 }
            }
            
@@ -910,7 +915,7 @@ public class DatabaseCreator {
         ResultSet ret = null;
         try {
             stmt = conn.createStatement();
-                for (String items : cart.getItems()) {
+                for (CartItem item : cart.getItems()) {
                 int newId;
                 int currentMax = 0;
                 //Calculate latest ID value
@@ -922,14 +927,7 @@ public class DatabaseCreator {
                 }
                 newId = currentMax + 1;
             
-                String[] splitItem = items.split(",");
-                String name = splitItem[0];
-                String quantity = splitItem[1];
-                String productID = splitItem[2];
-                Double singleItemCost = Double.parseDouble(splitItem[3]);
-            
-            
-                stmt.execute("INSERT INTO ITEMS (ID, USER_ID, NAME, PROD_ID, QUANTITY, COST ) VALUES ("+ newId+ "," + usr_id +",'" + name +"',"+ productID + "," + quantity + "," + singleItemCost  +")");
+                stmt.execute("INSERT INTO ITEMS (ID, USER_ID, NAME, PROD_ID, QUANTITY, COST ) VALUES ("+ newId+ "," + usr_id +",'" + item.getName() +"',"+ item.getProdId() + "," + item.getQuantity() + "," + item.getUnitCost()  +")");
             }
 
         } catch (SQLException ex) {

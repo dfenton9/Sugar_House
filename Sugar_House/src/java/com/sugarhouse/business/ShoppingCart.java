@@ -17,44 +17,42 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class ShoppingCart implements Serializable {
 
-    private ArrayList<String> items;
+    private ArrayList<CartItem> items;
     private double totalCost;
     //private int quantity;
     //private int productID;
 
     public ShoppingCart() {
-            items = new ArrayList<String>();
+            items = new ArrayList<CartItem>();
             totalCost = 0;
     }
 
-    public void addItem(int quantity, int productID, double unitCost, String name) {
-            String order = name + "," +quantity + "," + productID + "," + unitCost;
-            items.add(order);
-            totalCost = totalCost + (quantity * unitCost);
+    public void addItem(CartItem item) {
+            items.add(item);
+            totalCost = totalCost + (item.getUnitCost() * item.getQuantity());
     }
 
-    public void removeItem(int quantity, int productID, double unitCost, String name) {
-            String order = name + "," + quantity + "," + productID + "," + unitCost;
-            boolean wasRemoved = items.remove(order);
-            System.out.println("Was (" + order + ") Removed? " + wasRemoved);
-            totalCost = totalCost - (quantity * unitCost);
+    public void removeItem(CartItem item) {
+            boolean wasRemoved = items.remove(item);
+            System.out.println("Was (" + item.toString() + ") Removed? " + wasRemoved);
+            totalCost = totalCost - (item.getUnitCost() * item.getQuantity());
     }
     
-    public void appendItems(ArrayList<String> newItems)
+    public void appendItems(ArrayList<CartItem> newItems)
     {
-        for(String itemInfo : newItems)
+        for(CartItem item : newItems)
         {
-            if(!items.contains(itemInfo))
+            if(!items.contains(item))
             {
-                items.add(itemInfo);
+                items.add(item);
             }
         }
     }
-    public ArrayList<String> getItems() {
+    public ArrayList<CartItem> getItems() {
         return items;
     }
 
-    public void setItems(ArrayList<String> items) {
+    public void setItems(ArrayList<CartItem> items) {
         this.items = items;
     }
     public Double getTotalCost(){
@@ -64,9 +62,28 @@ public class ShoppingCart implements Serializable {
     	this.totalCost = totalCost;
     }
     
+    public CartItem alreadyInCart(int prodId)
+    {
+        for(CartItem item : items)
+        {
+            if(item.getProdId() == prodId)
+                return item;
+        }
+        return null;
+    }
+    
     public void resetCart()
     {
         this.items.clear();
         this.totalCost = 0;
+    }
+    
+    public void recalculateTotal()
+    {
+        this.totalCost = 0;
+        for(CartItem item : items)
+        {
+            this.totalCost += (item.getQuantity() * item.getUnitCost());
+        }
     }
 }

@@ -21,8 +21,31 @@ function inputValidation(){
 function quantityValidation(ele)
 {
     var data = ele.quantity.value;
-    if(parseInt(data) && (data%1)===0) {
+    if(parseInt(data) && (data%1)===0 && data > 0) {
           return true;
+    }else
+    {
+          alert("Must enter whole number value.");
+          return false;
+    }
+
+}
+
+function cartQuantityValidation(newVal, max, id, old)
+{
+    var data = newVal.value;
+    if(parseInt(data) && (data%1)===0 && data > 0) {
+        if(parseInt(data) === parseInt(old))
+        {
+            return false;
+        }else if(parseInt(data) > parseInt(max))
+        {
+            alert("Only " + max + " items in stock. Enter new quantity.");
+            return false;
+        }else
+        {
+            window.location = "shoppingCartController?action=update&quantity="+data+"&id="+id;
+        }
     }else
     {
           alert("Must enter whole number value.");

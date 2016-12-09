@@ -5,11 +5,13 @@
  */
 package com.sugarhouse.business;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Fenton
  */
-public class Product {
+public class Product implements Serializable {
     
     private int id;
     private String name;

@@ -5,6 +5,8 @@
 --%>
 
 
+<%@page import="com.sugarhouse.database.DatabaseCreator"%>
+<%@page import="com.sugarhouse.business.CartItem"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,10 +54,20 @@ button {
 	width: 100px;
 }
 </style>
+<script type="text/javascript" src="inputValidation.js">
+	
+</script>
 </head>
 
 <body>
-
+      <% 
+          if(session.getAttribute("databaseConnection") == null)
+          {
+             session.setAttribute("databaseConnection", new DatabaseCreator());
+          }
+          
+          DatabaseCreator dc = (DatabaseCreator)session.getAttribute("databaseConnection");
+      %>
 	<!-- Static navbar -->
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="container">
@@ -98,7 +110,7 @@ button {
                                     cart = (ShoppingCart)session.getAttribute("cart");
                                 }
 				Double totalCost = cart.getTotalCost();
-                                ArrayList<String> items = cart.getItems();
+                                ArrayList<CartItem> items = cart.getItems();
 
 				if (items.isEmpty() || totalCost == 0) {
 			%>
@@ -125,30 +137,25 @@ button {
 					<th>Edit</th>
 				</tr>
 				<%
-					for (int i = 0; i < items.size(); i++) {
-							String item = items.get(i);
-							String[] splitItem = item.split(",");
-                                                        String itemName = splitItem[0];
-							String itemQuantity = splitItem[1];
-							String itemID = splitItem[2];
-							Double singleItemCost = Double.parseDouble(splitItem[3]);
-							Double multiItemCost = singleItemCost * Double.parseDouble(itemQuantity);
+					for (CartItem item : items) {
+							;
+							Double multiItemCost = item.getUnitCost() * item.getQuantity();
 				%>
 
 				<tr>
-                                        <td><%=itemName %></td>
-					<td><%=itemID%></td>
-					<td><%=itemQuantity%></td>
+                                        <td><%=item.getName() %></td>
+					<td><%=item.getProdId() %></td>
+					<td><input type="text" name="newQuantity" value="<%=item.getQuantity() %>" onblur="return cartQuantityValidation(this, <%=dc.getInventoryUnits(item.getProdId())%>,<%=item.getProdId()%>,<%=item.getQuantity() %>)"></td>
                                         <td><%=formatter.format(multiItemCost)%></td>
 					<td>
 						<form action="shoppingCartController" method="post">
 							<div class="button-section">
 								<input type="submit" onclick="alert('Item removed from cart')" value="Remove from Cart"> 
                                                                 <input type="hidden" name="action" value="remove"> 
-                                                                <input type="hidden" name='name' value="<%=itemName%>">
-                                                                <input type="hidden" name="ID" value="<%=itemID%>"> 
-                                                                <input type="hidden" name="cost" value="<%=singleItemCost%>"> 
-                                                                <input type="hidden" name="quantity" value="<%=itemQuantity%>">
+                                                                <input type="hidden" name='name' value="<%=item.getName() %>">
+                                                                <input type="hidden" name="ID" value="<%=item.getProdId() %>"> 
+                                                                <input type="hidden" name="cost" value="<%=item.getUnitCost() %>"> 
+                                                                <input type="hidden" name="quantity" value="<%=item.getQuantity() %>">
 							</div>
 						</form>
 					</td>
@@ -164,19 +171,28 @@ button {
 					<td></td>
 				</tr>
 			</table>
+                        <br>
+                        <form action="loginController" method="post">
+                                <div class="button-section" align="left">
+                                        <input type="submit" value="Marketplace"> <input
+                                                type="hidden" name="action" value="marketplace">
+                                </div>
+                        </form>
                         <%if (session.getAttribute("User") == null)
                         {%>
                         <div> Must be logged in before checkout can be completed. <a href="/Sugar_House/logIn.jsp">Login Here</a></div>
                         <%}else{%>
-			<form action="/Sugar_House/checkout.jsp" method="POST" style="width: 400px">
-				<p></p>
-				<p></p>
-				<p></p>
-				<div class="button-section">
-					<input type="submit" value="Checkout" style="width: 200px">
-				</div>
-				<p></p>
-			</form>
+                        <div style="float:right;">
+                            <form id="checkout" action="/Sugar_House/checkout.jsp" method="POST" style="width: 400px">
+                                    <p></p>
+                                    <p></p>
+                                    <p></p>
+                                    <div class="button-section">
+                                            <input type="submit" value="Checkout" style="width: 200px">
+                                    </div>
+                                    <p></p>
+                            </form>
+                        </div>
                         <%}%>
 			<%
 				}
