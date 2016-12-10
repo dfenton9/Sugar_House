@@ -116,14 +116,13 @@ public class loginController extends HttpServlet {
                             }
                             
                             dc.getAllItems();
-                            
                             ShoppingCart usrCart = dc.getItems(user.getId());
                             
                             if(session.getAttribute("cart") != null)
                             {
                                usrCart.appendItems(((ShoppingCart) session.getAttribute("cart")).getItems());
                             }
-                            
+                            usrCart.recalculateTotal();
                             session.setAttribute("cart", usrCart);
                             session.setAttribute("User", user);
                             session.setAttribute("Login","true");
