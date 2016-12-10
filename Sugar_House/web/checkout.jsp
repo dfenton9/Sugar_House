@@ -49,10 +49,9 @@ button {
         $("#billingInformation").toggle();
     }
 </script>
-<script type="text/javascript" src="inputValidation.js">
+<script type="text/javascript" src="assets/js/inputValidation.js">
 	
 </script>
-        
 </head>
 
 <body>
@@ -121,9 +120,9 @@ button {
 							name="creditNumber" value="" maxlength="14" id="creditNumber" /></label>
 
 						<br> <label>*Credit Card Expiration Date (MM/yyyy) <script
-								type="text/javascript" src="jquery-1.12.4.js"></script> <script
-								type="text/javascript" src="jquery-ui.js"></script> <script
-								type="text/javascript" src="calendar.js"></script> <input
+								type="text/javascript" src="assets/js/jquery-1.12.4.js"></script> <script
+								type="text/javascript" src="assets/js/jquery-ui.js"></script> <script
+								type="text/javascript" src="assets/js/calendar.js"></script> <input
 							name="date" type="text" id='txtDate' onkeydown="return false"
 							value="12/2020" maxlength="7">
 

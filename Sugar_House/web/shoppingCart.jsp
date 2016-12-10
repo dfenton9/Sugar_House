@@ -54,7 +54,7 @@ button {
 	width: 100px;
 }
 </style>
-<script type="text/javascript" src="inputValidation.js">
+<script type="text/javascript" src="assets/js/inputValidation.js">
 	
 </script>
 </head>
