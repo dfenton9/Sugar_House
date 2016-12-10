@@ -495,7 +495,6 @@ public class DatabaseCreator {
             String status = "Confirmed";
             //Insert new user into table with all their information
             stmt.execute("INSERT INTO ORDERS (ID, USER_ID, ORDER_TOTAL_COST, ORDER_CREATED_DATE, ORDER_STATUS ) VALUES ("+ newId+ "," + usr_id +"," + total_cost +",'"+ sqlDate + "','" + status +"')");
-            System.out.println("Successfully inserted new order: " + newId);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }finally

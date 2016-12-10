@@ -46,19 +46,15 @@ public class PrintToExcel extends HttpServlet {
         List<Order> orders = new ArrayList<>();
         List<Product> products = new ArrayList<>();
         boolean runReport = true;
-        System.out.println("ReportType: " + reportType);
         if(reportType.equals("Orders"))
         {
             orders = dc.getOrders("id");
-            System.out.println("Order: " + orders.size());
         }else if(reportType.equals("Inventory"))
         {
             products = dc.getProducts("id");
-            System.out.println("Product: " + products.size());
         }else
         {
             runReport = false;
-            System.out.println("Invalid report type. Must be [Orders] or [Inventory].");
         }
         
         
@@ -68,10 +64,10 @@ public class PrintToExcel extends HttpServlet {
             StringBuilder report = new StringBuilder("Sugar House " + reportType +" Report\n\n");
             if(reportType.equals("Inventory"))
             {
-                report.append("ID\t").append("Name\t").append("Description\t").append("Inventory\t").append("Unit Cost($)\n");
+                report.append("ID\t").append("Name\t").append("Description\t").append("Inventory\t").append("Unit Cost($)\t").append("Is New\n");
                 for(Product prod : products)
                 {
-                    report.append(prod.getId()).append("\t").append(prod.getName()).append("\t").append(prod.getDescription()).append("\t").append(prod.getInventory()).append("\t$").append(prod.getCost()).append("\n");
+                    report.append(prod.getId()).append("\t").append(prod.getName()).append("\t").append(prod.getDescription()).append("\t").append(prod.getInventory()).append("\t$").append(prod.getCost()).append("\t").append(((prod.getIsNew()==1)?"Yes":"No")).append("\n");
                 }
             }
             

@@ -122,7 +122,6 @@ public class shoppingCartController extends HttpServlet {
             CartItem item = cart.alreadyInCart(productID);
             item.setQuantity(quantity);
             cart.recalculateTotal();
-            System.out.println("WOO HOO!! Updated quantity value!!");
             url = "/shoppingCart.jsp";
         }
         

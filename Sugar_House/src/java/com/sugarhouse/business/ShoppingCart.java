@@ -34,7 +34,6 @@ public class ShoppingCart implements Serializable {
 
     public void removeItem(CartItem item) {
             boolean wasRemoved = items.remove(item);
-            System.out.println("Was (" + item.toString() + ") Removed? " + wasRemoved);
             totalCost = totalCost - (item.getUnitCost() * item.getQuantity());
     }
     
