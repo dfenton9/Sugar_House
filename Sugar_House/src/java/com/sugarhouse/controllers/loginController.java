@@ -93,6 +93,7 @@ public class loginController extends HttpServlet {
                             Shopper user = dc.verifiyUser(login, password);
                             session.setAttribute("User", user);
                             session.setAttribute("Login","true");
+                            session.setAttribute("email", email);
                             url = "/index.jsp";
                                 
                         }
@@ -126,6 +127,7 @@ public class loginController extends HttpServlet {
                             session.setAttribute("cart", usrCart);
                             session.setAttribute("User", user);
                             session.setAttribute("Login","true");
+                            session.setAttribute("email", email);
                             url = "/index.jsp";
                         }else
                         {

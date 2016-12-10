@@ -9,15 +9,20 @@ import com.sugarhouse.business.CartItem;
 import com.sugarhouse.business.Shopper;
 import com.sugarhouse.business.ShoppingCart;
 import com.sugarhouse.database.DatabaseCreator;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.sugarhouse.util.MailUtilGmail;
 
 /**
  *
@@ -58,8 +63,26 @@ public class creditCardController extends HttpServlet {
         
         //Redirect user to the thank you page
         url = "/thankyou.jsp";
-        
         session.setAttribute("cart", cart);
+        
+        // get user name and email
+        String emailAddress = String.valueOf(session.getAttribute("email"));
+        String fullName = ((Shopper)session.getAttribute("User")).getName();
+        Double totalCost = cart.getTotalCost();
+        
+		// send email to user
+		String to = emailAddress;
+		String from = "FA16.605782@gmail.com";
+		String subject = "Shopping Confirmation - Sugar House";
+		String body = "Dear " + fullName + ",\n\n" + "Thank you for shopping with Sugar House. Your purchase total was $" + totalCost + "0. Expect to recieve your items in 3-5 business days. Have a great day and thanks again!\n\n" + "Sugar House team";
+		boolean isBodyHTML = false;
+		try {
+			MailUtilGmail.sendMail(to, from, subject, body, isBodyHTML);
+		} catch (MessagingException e) {
+			errMsg = "ERROR: Unable to send email. " + "Check Tomcat logs for details. " + "ERROR MESSAGE: " + e.getMessage();
+            url = "/shoppingCart.jsp";
+			this.log("Unable to send email. \n" + "Here is the email you tried to send: \n" + "=====================================\n" + "TO: " + emailAddress + "\n" + "FROM: " + from + "\n" + "SUBJECT: " + subject + "\n" + "\n" + body + "\n\n");
+		}
         
         session.setAttribute("ErrorMsg", errMsg);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
