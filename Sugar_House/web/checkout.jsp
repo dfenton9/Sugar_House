@@ -49,9 +49,8 @@ button {
         $("#billingInformation").toggle();
     }
 </script>
-<script type="text/javascript" src="assets/js/inputValidation.js">
-	
-</script>
+<script type="text/javascript" src="assets/js/inputValidation.js"></script>
+
 </head>
 
 <body>
