@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.sugarhouse.util.MailUtilGmail;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  *
@@ -54,6 +56,8 @@ public class creditCardController extends HttpServlet {
 
         session = request.getSession();
         ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
+        Double totalCost = cart.getTotalCost();
         //Modify the inventory to reflect the completion of this order
         updateInventory(cart, dc);
         //Add this order to the Orders table
@@ -68,13 +72,13 @@ public class creditCardController extends HttpServlet {
         // get user name and email
         String emailAddress = String.valueOf(session.getAttribute("email"));
         String fullName = ((Shopper)session.getAttribute("User")).getName();
-        Double totalCost = cart.getTotalCost();
+        
         
 		// send email to user
 		String to = emailAddress;
 		String from = "FA16.605782@gmail.com";
 		String subject = "Shopping Confirmation - Sugar House";
-		String body = "Dear " + fullName + ",\n\n" + "Thank you for shopping with Sugar House. Your purchase total was $" + totalCost + "0. Expect to recieve your items in 3-5 business days. Have a great day and thanks again!\n\n" + "Sugar House team";
+		String body = "Dear " + fullName + ",\n\n" + "Thank you for shopping with Sugar House. Your purchase total was " + formatter.format(totalCost) + ". Expect to recieve your items in 3-5 business days. Have a great day and thanks again!\n\n" + "Sugar House team";
 		boolean isBodyHTML = false;
 		try {
 			MailUtilGmail.sendMail(to, from, subject, body, isBodyHTML);

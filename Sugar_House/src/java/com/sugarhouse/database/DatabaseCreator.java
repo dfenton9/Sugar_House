@@ -149,8 +149,8 @@ public class DatabaseCreator {
              +"PASSWORD VARCHAR(20),"
              +"EMAIL VARCHAR(60))");
             
-            stmt.execute("INSERT INTO USERS VALUES (1,'superuser','easyAce123','super.user@foo.com')");
-            stmt.execute("INSERT INTO USERS VALUES (2,'admin','admin1234','admin.user@foo.com')");
+            stmt.execute("INSERT INTO USERS VALUES (1,'Guest1','password123','dfenton9@gmail.com')");
+            stmt.execute("INSERT INTO USERS VALUES (2,'admin','admin1234','dfenton9@gmail.com')");
             stmt.execute("INSERT INTO USERS VALUES (3,'dfenton9','asd123','dfenton9@gmail.com')");
            }
            

@@ -116,7 +116,7 @@ public class loginController extends HttpServlet {
                                 session.setAttribute("isAdmin", "no");
                             }
                             
-                            dc.getAllItems();
+                            //dc.getAllItems(); //Uncomment for debug output
                             ShoppingCart usrCart = dc.getItems(user.getId());
                             
                             if(session.getAttribute("cart") != null)
@@ -141,7 +141,7 @@ public class loginController extends HttpServlet {
                     int usr_id = ((Shopper)session.getAttribute("User")).getId();
                     dc.removeItems(usr_id);
                     dc.addItems(usr_id, cart);
-                    dc.getAllItems();
+                    //dc.getAllItems(); //uncomment for debug output
                     session.setAttribute("isAdmin", "no");
                     session.setAttribute("Login", "false");
                     session.setAttribute("User", null);

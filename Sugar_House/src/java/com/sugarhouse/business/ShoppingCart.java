@@ -33,8 +33,15 @@ public class ShoppingCart implements Serializable {
     }
 
     public void removeItem(CartItem item) {
-            boolean wasRemoved = items.remove(item);
-            totalCost = totalCost - (item.getUnitCost() * item.getQuantity());
+            for(CartItem storedItem : items)
+            {
+                if(item.getProdId() == storedItem.getProdId())
+                {
+                    int index = items.indexOf(storedItem);
+                    items.remove(index);
+                    totalCost = totalCost - (item.getUnitCost() * item.getQuantity());
+                }
+            }
     }
     
     public void appendItems(ArrayList<CartItem> newItems)
