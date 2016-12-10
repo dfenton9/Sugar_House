@@ -4,6 +4,7 @@
     Author     : danielfenton
 --%>
 
+<%@page import="java.util.Locale"%>
 <%@page import="java.text.NumberFormat"%>
 <%@page import="com.sugarhouse.business.Product"%>
 <%@page import="com.sugarhouse.database.DatabaseCreator"%>
@@ -153,7 +154,7 @@
                                 </td>
                                     
                             </tr>
-                            <% NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                            <% NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
                             for(Product prod : dc.getProducts("id")) { %>
                             <tr>
                                 <td>

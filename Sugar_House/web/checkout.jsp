@@ -96,7 +96,7 @@ button {
 			<%
 				session = request.getSession();
 				ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-                                NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                                NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
 			%>
                         <% if(session.getAttribute("ErrorMsg") != null && !session.getAttribute("ErrorMsg").equals("")){%>
                             <div style="color:red;"><%=session.getAttribute("ErrorMsg")%></div>

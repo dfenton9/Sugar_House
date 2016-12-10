@@ -4,6 +4,7 @@
     Author     : Snyder
 --%>
 
+<%@page import="java.util.Locale"%>
 <%@page import="com.sugarhouse.business.Shopper"%>
 <%@page import="java.text.NumberFormat"%>
 <%@page import="com.sugarhouse.business.Order"%>
@@ -111,7 +112,7 @@ button {
 					<th>Order Status</th>
 					<th>Order Cost</th>
 				</tr>
-                            <% NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                            <% NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
                                 for(Order order : dc.getOrders("id")) { %>
                                 <tr>
                                     <td><%= dc.getUsersLogin(order.getUID()) %></td>

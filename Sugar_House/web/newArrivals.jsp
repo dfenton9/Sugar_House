@@ -1,3 +1,4 @@
+<%@page import="java.util.Locale"%>
 <%@page import="java.text.NumberFormat"%>
 <%@page import="com.sugarhouse.database.DatabaseCreator"%>
 <%@page import="com.sugarhouse.business.Product"%>
@@ -30,7 +31,6 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-</head>
 <style>
 table, td, th {    
     border: 1px solid #ddd;
@@ -49,6 +49,7 @@ button {
   width:100px; 
 } 
 </style>
+</head>
 <body>
       <% 
           if(session.getAttribute("databaseConnection") == null)
@@ -115,7 +116,7 @@ button {
                                 <div style="color:red;"><%=session.getAttribute("ErrorMsg")%></div>
                             <%} session.setAttribute("ErrorMsg","");%>
 				<table>
-                                    <%  NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                                    <%  NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
                                         int index = 0;
                                         for(Product prod : dc.getProducts("name")) { 
                                             if(prod.getIsNew() == 1)

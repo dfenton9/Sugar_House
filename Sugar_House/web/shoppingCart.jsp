@@ -125,7 +125,7 @@ button {
 
 			<%
 				} else {
-                                NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                                NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
 			%>
 
 			<table>

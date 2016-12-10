@@ -1,3 +1,4 @@
+<%@page import="java.util.Locale"%>
 <%@page import="java.text.NumberFormat"%>
 <%@page import="com.sugarhouse.business.Product"%>
 <%@page import="com.sugarhouse.database.DatabaseCreator"%>
@@ -119,7 +120,7 @@ button {
                                 <div style="color:red;"><%=session.getAttribute("ErrorMsg")%></div>
                             <%} session.setAttribute("ErrorMsg","");%>
 				<table>
-                                    <%  NumberFormat formatter = NumberFormat.getCurrencyInstance();
+                                    <%  NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
                                         int index = 0;
                                         for(Product prod : dc.getProducts("name")) { %>
 					<tr>
