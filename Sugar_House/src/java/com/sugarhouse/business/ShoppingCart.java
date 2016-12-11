@@ -40,6 +40,7 @@ public class ShoppingCart implements Serializable {
                     int index = items.indexOf(storedItem);
                     items.remove(index);
                     totalCost = totalCost - (item.getUnitCost() * item.getQuantity());
+                    break;
                 }
             }
     }
